@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { container, field } from '../styles/form'
+import { row } from '../styles/shared'
 
 import useFormal from "@kevinwolf/formal-web"
 import useNetwork from "../lib/use-network"
@@ -65,6 +66,7 @@ function YouTubeForm() {
         </Fragment>
       )}
       <style jsx>{container}</style>
+      <style jsx>{row}</style>
     </Fragment>
   )
 }
