@@ -10,7 +10,7 @@ ffmpeg.setFfmpegPath(ffmpegBinary.path)
 
 const ytdl = require('ytdl-core')
 
-module.exports = tempFolder => {
+module.exports = () => {
   router.use(body.json())
   router.use(morgan('combined'))
   router.get('/', (req, res) => {

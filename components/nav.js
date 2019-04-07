@@ -37,7 +37,7 @@ const Nav = () => (
       }
       nav {
         text-align: center;
-        background-color: rgb(204,24,30);
+        background-color: #2887A2;
         padding: 4px 16px;
       }
       ul {

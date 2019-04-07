@@ -1,7 +1,5 @@
 const next = require('next')
 const express = require('express')
-const temp = require('temp').track()
-const tempFolder = temp.mkdirSync()
 const { createServer } = require('http')
 const compression = require('compression')
 const port = process.env.PORT || 3000
@@ -14,7 +12,7 @@ nextApp.prepare().then(() => {
   app.use(compression())
   const server = createServer(app)
 
-  app.use('/api', require('./api/router')(tempFolder))
+  app.use('/api', require('./api/router')())
 
   app.get('*', (req, res) => {
     return handle(req, res)
