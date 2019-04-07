@@ -69,12 +69,6 @@ const getVideo = stream => (req, res) => {
         id: info.video_id
       }
       if (stream) {
-        res.writeHead(200, {
-          'Transfer-Encoding': 'chunked',
-          'Cache-Control': "no-cache",
-          'Connection': 'Keep-Alive'
-        });
-
         const tempFile = temp.createWriteStream()
         ffmpeg(youtube)
           .noVideo()
