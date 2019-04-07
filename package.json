@@ -9,6 +9,7 @@
     "@kevinwolf/formal-web": "^0.1.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "compression": "^1.7.4",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "ffmpeg-static": "^2.4.0",
