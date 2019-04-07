@@ -65,8 +65,8 @@ function YouTubeForm() {
           </audio>
         </Fragment>
       )}
-      <style jsx>{container}</style>
       <style jsx>{row}</style>
+      <style jsx>{container}</style>
     </Fragment>
   )
 }
