@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { container, field } from '../styles/form'
 import { row } from '../styles/shared'
 
@@ -59,7 +59,7 @@ function YouTubeForm() {
               <p><a href={res.data.channelUrl}>{res.data.channelName}</a></p>
             </div>
           </div>
-          <audio className='row' autoPlay controls>
+          <audio className='row' autoPlay controls preload='none'>
             <source src={`/api/stream-youtube/${res.data.id}`} type="audio/mpeg" />
             Your browser does not support the audio tag.
           </audio>
