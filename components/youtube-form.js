@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from 'react'
+import React, { Fragment, useCallback, useRef } from 'react'
 import { container, field } from '../styles/form'
 import { row } from '../styles/shared'
 
@@ -26,6 +26,9 @@ function Field({ id, label, error, children, ...props }) {
 
 function YouTubeForm() {
   const [ res, sendRequest ] = useNetwork('/api/info')
+  const audioElement = useRef(null);
+  const url = res.data && `/api/stream-youtube/${res.data.id}`
+
   const formal = useFormal({}, {
     schema,
     onSubmit: sendRequest
@@ -59,12 +62,13 @@ function YouTubeForm() {
               <p><a href={res.data.channelUrl}>{res.data.channelName}</a></p>
             </div>
           </div>
-          <audio className='row' autoPlay controls preload='none'>
-            <source src={`/api/stream-youtube/${res.data.id}`} type="audio/mpeg" />
-            Your browser does not support the audio tag.
-          </audio>
         </Fragment>
       )}
+
+      <audio className='row' autoPlay controls ref={audioElement} src={url}>
+        Your browser does not support the audio tag.
+      </audio>
+
       <style jsx>{row}</style>
       <style jsx>{container}</style>
     </Fragment>

@@ -1,17 +1,21 @@
 const next = require('next')
 const express = require('express')
+const temp = require('temp').track()
+const tempFolder = temp.mkdirSync()
+const { createServer } = require('http')
 
 const port = process.env.PORT || 3000
 const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const nextApp = next({ dev })
+const handle = nextApp.getRequestHandler()
 
-app.prepare().then(() => {
-  const server = express()
+nextApp.prepare().then(() => {
+  const app = express()
+  const server = createServer(app)
 
-  server.use('/api', require('./api/router'))
+  app.use('/api', require('./api/router')(tempFolder))
 
-  server.get('*', (req, res) => {
+  app.get('*', (req, res) => {
     return handle(req, res)
   })
 
