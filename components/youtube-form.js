@@ -7,10 +7,6 @@ import useNetwork from "../lib/use-network"
 import * as yup from "yup"
 import audioContext from '../lib/audio-context'
 
-const schema = yup.object().shape({
-  url: yup.string().url().required()
-})
-
 function Field({ id, label, error, children, ...props }) {
   return (
     <div>
@@ -33,6 +29,16 @@ function YouTubeForm() {
   useMemo(() => {
     audio.setAudioUrl(url)
   }, [url])
+
+  const schema = useMemo(() => {
+    try {
+      return yup.object().shape({
+        url: yup.string().url().required()
+      })
+    } catch (e) {
+      return null
+    }
+  })
 
   const formal = useFormal({}, {
     schema,

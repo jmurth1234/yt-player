@@ -1,12 +1,16 @@
 {
-  "name": "create-next-example-app",
+  "name": "yt-player",
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js"
+    "start": "cross-env NODE_ENV=production node server.js",
+    "analyze": "BUNDLE_ANALYZE=both next build",
+    "analyze:server": "BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
     "@kevinwolf/formal-web": "^0.1.0",
+    "@zeit/next-bundle-analyzer": "^0.1.2",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.4",
