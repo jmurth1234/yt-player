@@ -16,4 +16,11 @@ export default css`
   .description {
     text-align: center;
   }
+
+  @media screen and (max-width: 768px) {
+    .title {
+      padding-top: 20px;
+      font-size: 36px;
+    }
+  }
 `

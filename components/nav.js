@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { nav } from '../styles/shared'
 
 const links = [
   { href: '/about', label: 'About' },
@@ -11,50 +12,25 @@ const links = [
 
 const Nav = () => (
   <nav>
-    <ul>
+    <ul className='left'>
       <li>
         <Link prefetch href="/">
           <a>Home</a>
         </Link>
       </li>
-      <ul>
-        {links.map(({ key, href, label }) => (
-          <li key={key}>
-            <Link href={href}>
-              <a>{label}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
     </ul>
 
-    <style jsx>{`
-      :global(*) { box-sizing: border-box; }
-      :global(body) {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
-          Helvetica, sans-serif;
-      }
-      nav {
-        text-align: center;
-        background-color: #2887A2;
-        padding: 4px 16px;
-      }
-      ul {
-        display: flex;
-        justify-content: space-between;
-        padding: 0;
-      }
-      li {
-        display: flex;
-        padding: 6px 8px;
-      }
-      a {
-        color: rgb(241,241,241);
-        text-decoration: none;
-        font-size: 13px;
-      }
-    `}</style>
+    <ul>
+      {links.map(({ key, href, label }) => (
+        <li key={key}>
+          <Link href={href}>
+            <a>{label}</a>
+          </Link>
+        </li>
+      ))}
+    </ul>
+
+    <style jsx>{nav}</style>
   </nav>
 )
 

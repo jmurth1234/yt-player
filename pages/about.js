@@ -7,7 +7,6 @@ import { row } from '../styles/shared'
 const Home = () => (
   <div>
     <Head title="About" />
-    <Nav />
 
     <div className="hero">
       <h1 className="title">About YT Player</h1>

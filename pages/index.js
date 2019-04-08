@@ -8,16 +8,15 @@ import YoutubeForm from '../components/youtube-form'
 const Home = () => (
   <div>
     <Head title="Home" />
-    <Nav />
 
     <div className="hero">
       <h1 className="title">Welcome to YT Player</h1>
       <p className="description">
         Play most YouTube videos, without the video
       </p>
-
-      <YoutubeForm />
     </div>
+
+    <YoutubeForm />
 
     <style jsx>{home}</style>
   </div>

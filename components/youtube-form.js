@@ -1,10 +1,11 @@
-import React, { Fragment, useCallback, useRef } from 'react'
+import React, { Fragment, useContext, useMemo } from 'react'
 import { container, field } from '../styles/form'
 import { row } from '../styles/shared'
 
 import useFormal from "@kevinwolf/formal-web"
 import useNetwork from "../lib/use-network"
 import * as yup from "yup"
+import audioContext from '../lib/audio-context'
 
 const schema = yup.object().shape({
   url: yup.string().url().required()
@@ -25,9 +26,13 @@ function Field({ id, label, error, children, ...props }) {
 }
 
 function YouTubeForm() {
-  const [ res, sendRequest ] = useNetwork('/api/info')
-  const audioElement = useRef(null);
+  const [res, sendRequest] = useNetwork('/api/info')
   const url = res.data && `/api/stream-youtube/${res.data.id}`
+  const audio = useContext(audioContext)
+
+  useMemo(() => {
+    audio.setAudioUrl(url)
+  }, [url])
 
   const formal = useFormal({}, {
     schema,
@@ -48,8 +53,8 @@ function YouTubeForm() {
 
       {!res.isLoading && res.error && (
         <div className='row error'>
-          <h2>Could not stream URL</h2>
-          <p>{res.error}</p>
+          <h2>Could not get video</h2>
+          <p>{res.error.message}</p>
         </div>
       )}
 
@@ -64,10 +69,6 @@ function YouTubeForm() {
           </div>
         </Fragment>
       )}
-
-      <audio className='row' autoPlay controls ref={audioElement} src={url}>
-        Your browser does not support the audio tag.
-      </audio>
 
       <style jsx>{row}</style>
       <style jsx>{container}</style>
