@@ -3,10 +3,16 @@ import App, { Container } from 'next/app'
 import Nav from '../components/nav'
 import AudioContext from '../lib/audio-context'
 import Player from '../components/player'
+import { PageTransition } from 'next-page-transitions'
 
 class YTApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {}
+
+    // this will do I guess
+    if (ctx.res && ctx.res.req.url.includes('/player')) {
+      ctx.res.redirect('/')
+    }
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
@@ -15,20 +21,65 @@ class YTApp extends App {
     return { pageProps }
   }
 
-  state = { url: null }
+  state = {
+    nowPlaying: {},
+    playing: false
+  }
 
-  setAudioUrl = (url) => this.setState({ url })
+  audio = React.createRef();
+
+  setNowPlaying = (nowPlaying) => this.setState({ nowPlaying })
+  setPlaying = (playing) => this.setState({ playing })
 
   render() {
-    const { Component, pageProps } = this.props
-    const audioContext = { url: this.state.url, setAudioUrl: this.setAudioUrl }
+    const { Component, pageProps, router } = this.props
+    const audioContext = {
+      nowPlaying: this.state.nowPlaying,
+      isPlaying: this.state.playing,
+      setNowPlaying: this.setNowPlaying,
+      togglePlaying: () => {
+        if (this.state.playing) {
+          this.audio.current.pause()
+        } else {
+          this.audio.current.play()
+        }
+      }
+    }
+
+    const hidden = router.pathname.includes('player')
 
     return (
       <AudioContext.Provider value={audioContext}>
         <Container>
-          <Nav />
-          <Component {...pageProps} />
-          <Player />
+          <Nav hidden={hidden} />
+          <PageTransition timeout={200} classNames="full-height page-transition">
+            <Component {...pageProps} key={router.route} />
+          </PageTransition>
+          <Player hidden={hidden} />
+
+          <audio autoPlay src={audioContext.nowPlaying.url} ref={this.audio} onPlaying={() => this.setPlaying(true)} onPause={() => this.setPlaying(false)}>
+            Your browser does not support the audio tag.
+          </audio>
+
+          <style jsx global>{`
+            .full-height {
+              height: 100%;
+            }
+            .page-transition-enter {
+              opacity: 0;
+            }
+            .page-transition-enter-active {
+              opacity: 1;
+              transition: opacity 200ms;
+            }
+            .page-transition-exit {
+              opacity: 1;
+            }
+            .page-transition-exit-active {
+              opacity: 0;
+              transition: opacity 200ms;
+            }
+        `}</style>
         </Container>
       </AudioContext.Provider>
     )

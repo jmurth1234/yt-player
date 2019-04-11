@@ -9,6 +9,9 @@
     "analyze:browser": "BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "@kevinwolf/formal-web": "^0.1.0",
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "axios": "^0.18.0",
@@ -20,6 +23,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "morgan": "^1.9.1",
     "next": "^8.0.4",
+    "next-page-transitions": "^1.0.0-beta.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "ytdl-core": "^0.29.1",

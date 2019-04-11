@@ -5,7 +5,7 @@ import home from '../styles/home'
 import { row } from '../styles/shared'
 
 const Home = () => (
-  <div>
+  <div className='page'>
     <Head title="About" />
 
     <div className="hero">

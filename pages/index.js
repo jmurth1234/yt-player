@@ -6,7 +6,7 @@ import home from '../styles/home'
 import YoutubeForm from '../components/youtube-form'
 
 const Home = () => (
-  <div>
+  <div className='page'>
     <Head title="Home" />
 
     <div className="hero">

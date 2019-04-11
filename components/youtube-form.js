@@ -27,7 +27,14 @@ function YouTubeForm() {
   const audio = useContext(audioContext)
 
   useMemo(() => {
-    audio.setAudioUrl(url)
+    if (!url) {
+      return
+    }
+
+    audio.setNowPlaying({
+      ...res.data,
+      url
+    })
   }, [url])
 
   const schema = useMemo(() => {
@@ -62,18 +69,6 @@ function YouTubeForm() {
           <h2>Could not get video</h2>
           <p>{res.error.message}</p>
         </div>
-      )}
-
-      {!res.isLoading && res.data && (
-        <Fragment>
-          <div className='row card'>
-            <img src={res.data.thumb} />
-            <div className='cardTitle'>
-              <h2>{res.data.title}</h2>
-              <p><a href={res.data.channelUrl}>{res.data.channelName}</a></p>
-            </div>
-          </div>
-        </Fragment>
       )}
 
       <style jsx>{row}</style>

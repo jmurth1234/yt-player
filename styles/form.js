@@ -1,21 +1,7 @@
 import css from 'styled-jsx/css'
-
-const shadow = 'box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2)'
+import { shadow } from './shared'
 
 export const container = css`
-  .card {
-    flex-direction: row;
-  }
-
-  img {
-    flex: 0 1 auto;
-    margin-right: 20px;
-  }
-
-  .cardTitle {
-    flex: 1 1 100%;
-  }
-
   audio {
     width: 100%;
   }

@@ -26,11 +26,13 @@ module.exports = () => {
     try {
       const youtube = ytdl(url)
       youtube.on('info', info => {
+        const largeThumb = info.player_response.videoDetails.thumbnail.thumbnails.pop()
         const videoInfo = {
           title: info.title,
           channelName: info.author.name,
           channelUrl: info.author.channel_url,
           thumb: info.thumbnail_url,
+          largeThumb: largeThumb.url,
           id: info.video_id
         }
         if (!stream) {
