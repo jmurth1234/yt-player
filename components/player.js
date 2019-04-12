@@ -17,9 +17,9 @@ function AudioPlayer({ hidden }) {
     <Fragment>
       <div className={`player fixedBar bottom ${offscreen}`}>
         <img src={nowPlaying.thumb} />
-        <Link href='/player'>
-          <div className='cardInfo'>  
-            <p className='cardTitle'>{nowPlaying.title}</p>
+        <Link href="/player">
+          <div className="cardInfo">
+            <p className="cardTitle">{nowPlaying.title}</p>
             <p>{nowPlaying.channelName}</p>
           </div>
         </Link>

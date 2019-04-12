@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useRef, useState } from 'react'
+import React, { useContext } from 'react'
 import Head from '../components/head'
 import player from '../styles/player-page'
 import audioContext from '../lib/audio-context'
@@ -7,10 +7,10 @@ const Player = () => {
   const { nowPlaying } = useContext(audioContext)
 
   return (
-    <div className='center'>
+    <div className="center">
       <Head title="Now Playing" />
-  
-      <div className='infoArea'>
+
+      <div className="infoArea">
         <div>
           <img src={nowPlaying.largeThumb} />
         </div>
@@ -22,7 +22,7 @@ const Player = () => {
           </a>
         </div>
       </div>
-    
+
       <style jsx>{player}</style>
       <style jsx>{`
       .center:before {

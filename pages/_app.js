@@ -26,10 +26,10 @@ class YTApp extends App {
     playing: false
   }
 
-  audio = React.createRef();
+  audio = React.createRef()
 
-  setNowPlaying = (nowPlaying) => this.setState({ nowPlaying })
-  setPlaying = (playing) => this.setState({ playing })
+  setNowPlaying = nowPlaying => this.setState({ nowPlaying })
+  setPlaying = playing => this.setState({ playing })
 
   render() {
     const { Component, pageProps, router } = this.props
@@ -52,12 +52,21 @@ class YTApp extends App {
       <AudioContext.Provider value={audioContext}>
         <Container>
           <Nav hidden={hidden} />
-          <PageTransition timeout={200} classNames="full-height page-transition">
+          <PageTransition
+            timeout={200}
+            classNames="full-height page-transition"
+          >
             <Component {...pageProps} key={router.route} />
           </PageTransition>
           <Player hidden={hidden} />
 
-          <audio autoPlay src={audioContext.nowPlaying.url} ref={this.audio} onPlaying={() => this.setPlaying(true)} onPause={() => this.setPlaying(false)}>
+          <audio
+            autoPlay
+            src={audioContext.nowPlaying.url}
+            ref={this.audio}
+            onPlaying={() => this.setPlaying(true)}
+            onPause={() => this.setPlaying(false)}
+          >
             Your browser does not support the audio tag.
           </audio>
 
@@ -79,7 +88,7 @@ class YTApp extends App {
               opacity: 0;
               transition: opacity 200ms;
             }
-        `}</style>
+          `}</style>
         </Container>
       </AudioContext.Provider>
     )

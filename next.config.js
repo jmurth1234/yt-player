@@ -13,7 +13,7 @@ const nextConfig = {
       reportFilename: './bundles/client.html'
     }
   },
-  webpack (config) {
+  webpack(config) {
     config.node = {
       fs: 'empty'
     }

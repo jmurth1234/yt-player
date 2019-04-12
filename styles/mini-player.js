@@ -13,7 +13,7 @@ export default css`
     display: flex;
     flex-direction: row;
     transition: all 0.2s;
-    box-shadow: 0px -2px 16px 8px rgba(0,0,0,0.2);
+    box-shadow: 0px -2px 16px 8px rgba(0, 0, 0, 0.2);
   }
 
   .offscreen {
@@ -37,7 +37,7 @@ export default css`
     max-lines: 2;
   }
 
-  p { 
+  p {
     margin: 0;
     padding: 0;
     font-size: 14px;

@@ -41,28 +41,30 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubun
 `
 
 export const nav = css`
-  :global(*) { box-sizing: border-box; }
+  :global(*) {
+    box-sizing: border-box;
+  }
   :global(html) {
-    ${ bodyCss }
+    ${bodyCss}
   }
   :global(body) {
-    ${ bodyCss }
+    ${bodyCss}
   }
   :global(#__next) {
-    ${ bodyCss }
+    ${bodyCss}
   }
 
   nav {
     text-align: center;
-    background-color: #2887A2;
+    background-color: #2887a2;
     display: flex;
     height: 72px;
     transition: all 0.2s;
-    ${ shadow }
+    ${shadow}
   }
 
   .offscreen {
-    transform: translateY(-72px); 
+    transform: translateY(-72px);
   }
 
   ul {
@@ -81,9 +83,9 @@ export const nav = css`
     justify-content: center;
     align-items: center;
   }
-  
+
   a {
-    color: rgb(241,241,241);
+    color: rgb(241, 241, 241);
     text-decoration: none;
     padding: 0 15px;
     font-size: 13px;

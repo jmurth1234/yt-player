@@ -9,7 +9,7 @@ export const container = css`
   button {
     flex: 0 0 auto;
     border: 0;
-    background-color: #cc181e; 
+    background-color: #cc181e;
     color: #fff;
   }
 `
@@ -38,10 +38,11 @@ export const field = css`
   label {
     font-weight: bold;
     margin-bottom: 4px;
-    display: block;  
+    display: block;
   }
 
-  .inlineField:hover, input:focus {
-    ${ shadow };
+  .inlineField:hover,
+  input:focus {
+    ${shadow};
   }
 `

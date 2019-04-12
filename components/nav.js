@@ -14,14 +14,14 @@ const Nav = ({ hidden }) => {
   const hiddenClass = hidden ? 'offscreen' : ''
   return (
     <nav className={`fixedBar top ${hiddenClass}`}>
-      <ul className='left'>
+      <ul className="left">
         <li>
           <Link prefetch href="/">
             <a>Home</a>
           </Link>
         </li>
       </ul>
-  
+
       <ul>
         {links.map(({ key, href, label }) => (
           <li key={key}>
@@ -31,7 +31,7 @@ const Nav = ({ hidden }) => {
           </li>
         ))}
       </ul>
-  
+
       <style jsx>{fixedBar}</style>
       <style jsx>{nav}</style>
     </nav>

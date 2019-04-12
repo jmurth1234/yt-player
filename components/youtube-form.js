@@ -2,23 +2,23 @@ import React, { Fragment, useContext, useMemo } from 'react'
 import { container, field } from '../styles/form'
 import { row } from '../styles/shared'
 
-import useFormal from "@kevinwolf/formal-web"
-import useNetwork from "../lib/use-network"
-import * as yup from "yup"
+import useFormal from '@kevinwolf/formal-web'
+import useNetwork from '../lib/use-network'
+import * as yup from 'yup'
 import audioContext from '../lib/audio-context'
 
 function Field({ id, label, error, children, ...props }) {
   return (
     <div>
       <label htmlFor={id}>{label}</label>
-      <div className='inlineField'>
+      <div className="inlineField">
         <input id={id} type="text" {...props} />
         {children}
       </div>
       {error && <div>{error}</div>}
       <style jsx>{field}</style>
     </div>
-  );
+  )
 }
 
 function YouTubeForm() {
@@ -40,32 +40,38 @@ function YouTubeForm() {
   const schema = useMemo(() => {
     try {
       return yup.object().shape({
-        url: yup.string().url().required()
+        url: yup
+          .string()
+          .url()
+          .required()
       })
     } catch (e) {
       return null
     }
   })
 
-  const formal = useFormal({}, {
-    schema,
-    onSubmit: sendRequest
-  })
+  const formal = useFormal(
+    {},
+    {
+      schema,
+      onSubmit: sendRequest
+    }
+  )
 
   return (
     <Fragment>
       <form {...formal.getFormProps()} className="row">
-        <Field label="Youtube URL" {...formal.getFieldProps("url")} >
+        <Field label="Youtube URL" {...formal.getFieldProps('url')}>
           <button {...formal.getSubmitButtonProps()} type="submit">
             Submit
           </button>
         </Field>
       </form>
 
-      {res.isLoading && <div className='row'>Loading...</div>}
+      {res.isLoading && <div className="row">Loading...</div>}
 
       {!res.isLoading && res.error && (
-        <div className='row error'>
+        <div className="row error">
           <h2>Could not get video</h2>
           <p>{res.error.message}</p>
         </div>

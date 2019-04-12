@@ -42,15 +42,15 @@ module.exports = () => {
 
       if (stream) {
         res.set({
-          'Content-Type': 'audio/mpeg',
+          'Content-Type': 'audio/mpeg'
         })
         ffmpeg(youtube)
           .noVideo()
-          .format("mp3")
+          .format('mp3')
           .on('end', () => {
             console.log('Successfully converted file')
           })
-          .on('error', (err) => {
+          .on('error', err => {
             console.log('Error: ' + err.message)
             console.log(err)
           })
