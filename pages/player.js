@@ -2,10 +2,25 @@ import React, { useContext } from 'react'
 import Head from '../components/head'
 import player from '../styles/player-page'
 import audioContext from '../lib/audio-context'
+import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import Slider from 'rc-slider'
 
 const Player = () => {
-  const { nowPlaying } = useContext(audioContext)
+  const {
+    nowPlaying,
+    isPlaying,
+    togglePlaying,
+    volume,
+    setVolume
+  } = useContext(audioContext)
 
+  const sliderChanged = e => {
+    setVolume(e)
+  }
+
+  const playingIcon = isPlaying ? faPause : faPlay
   return (
     <div className="center">
       <Head title="Now Playing" />
@@ -20,6 +35,26 @@ const Player = () => {
           <a href={nowPlaying.channelUrl} className="description">
             <p>{nowPlaying.channelName}</p>
           </a>
+        </div>
+      </div>
+
+      <div className="controls">
+        <div className="buttons">
+          <button className="primary" onClick={togglePlaying}>
+            <FontAwesomeIcon size="lg" icon={playingIcon} />
+          </button>
+        </div>
+
+        <div className="sliderContainer">
+          <label>Volume: {Math.round(volume * 100)}</label>
+          <Slider
+            min={0}
+            max={1}
+            step={0.01}
+            defaultValue={1}
+            value={volume}
+            onChange={sliderChanged}
+          />
         </div>
       </div>
 

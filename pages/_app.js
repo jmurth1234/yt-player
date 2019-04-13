@@ -5,6 +5,7 @@ import AudioContext from '../lib/audio-context'
 import Player from '../components/player'
 import { PageTransition } from 'next-page-transitions'
 
+import 'rc-slider/assets/index.css'
 class YTApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {}
@@ -23,20 +24,26 @@ class YTApp extends App {
 
   state = {
     nowPlaying: {},
-    playing: false
+    playing: false,
+    volume: 1
   }
 
   audio = React.createRef()
 
   setNowPlaying = nowPlaying => this.setState({ nowPlaying })
   setPlaying = playing => this.setState({ playing })
+  setVolume = () => this.setState({ volume: this.audio.current.volume })
 
   render() {
     const { Component, pageProps, router } = this.props
     const audioContext = {
       nowPlaying: this.state.nowPlaying,
       isPlaying: this.state.playing,
+      volume: this.state.volume,
       setNowPlaying: this.setNowPlaying,
+      setVolume: vol => {
+        this.audio.current.volume = vol
+      },
       togglePlaying: () => {
         if (this.state.playing) {
           this.audio.current.pause()
@@ -66,6 +73,7 @@ class YTApp extends App {
             ref={this.audio}
             onPlaying={() => this.setPlaying(true)}
             onPause={() => this.setPlaying(false)}
+            onVolumeChange={() => this.setVolume()}
           >
             Your browser does not support the audio tag.
           </audio>

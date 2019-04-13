@@ -28,7 +28,7 @@ module.exports = () => {
       youtube.on('info', info => {
         const largeThumb = info.player_response.videoDetails.thumbnail.thumbnails.pop()
         const videoInfo = {
-          title: info.title,
+          title: info.title.trim(),
           channelName: info.author.name,
           channelUrl: info.author.channel_url,
           thumb: info.thumbnail_url,

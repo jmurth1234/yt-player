@@ -12,6 +12,7 @@ export default css`
     margin: 0;
     display: flex;
     flex-direction: row;
+    align-items: stretch;
     transition: all 0.2s;
     box-shadow: 0px -2px 16px 8px rgba(0, 0, 0, 0.2);
   }
@@ -21,18 +22,19 @@ export default css`
   }
 
   img {
-    flex: 0 1 auto;
+    flex: 0 0 100px;
     margin-right: 20px;
   }
 
   .cardInfo {
-    flex: 1 1 0px;
+    flex: 1;
     display: flex;
     justify-content: center;
     flex-direction: column;
   }
 
   .cardTitle {
+    min-width: 0;
     font-weight: bold;
     max-lines: 2;
   }
@@ -42,7 +44,7 @@ export default css`
     padding: 0;
     font-size: 14px;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: wrap;
     text-overflow: ellipsis;
   }
 

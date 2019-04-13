@@ -31,4 +31,42 @@ export default css`
     text-align: center;
     width: 100%;
   }
+
+  .controls {
+    padding: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .sliderContainer {
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
+
+  .sliderContainer label {
+    font-weight: bold;
+  }
+
+  .buttons {
+    margin-bottom: 20px;
+  }
+
+  button {
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.2);
+    border: 0;
+  }
+
+  .primary {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+  }
 `
