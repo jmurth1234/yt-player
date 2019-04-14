@@ -25,7 +25,9 @@ class YTApp extends App {
   state = {
     nowPlaying: {},
     playing: false,
-    volume: 1
+    volume: 1,
+    currentTime: 0,
+    currentBuffered: 0
   }
 
   audio = React.createRef()
@@ -33,6 +35,12 @@ class YTApp extends App {
   setNowPlaying = nowPlaying => this.setState({ nowPlaying })
   setPlaying = playing => this.setState({ playing })
   setVolume = () => this.setState({ volume: this.audio.current.volume })
+  setCurrentTime = () => {
+    this.setState({
+      currentTime: this.audio.current.currentTime,
+      currentBuffered: this.audio.current.buffered.end(0)
+    })
+  }
 
   render() {
     const { Component, pageProps, router } = this.props
@@ -41,8 +49,13 @@ class YTApp extends App {
       isPlaying: this.state.playing,
       volume: this.state.volume,
       setNowPlaying: this.setNowPlaying,
+      currentTime: this.state.currentTime,
+      currentBuffered: this.state.currentBuffered,
       setVolume: vol => {
         this.audio.current.volume = vol
+      },
+      setPosition: pos => {
+        this.audio.current.currentTime = pos
       },
       togglePlaying: () => {
         if (this.state.playing) {
@@ -74,6 +87,7 @@ class YTApp extends App {
             onPlaying={() => this.setPlaying(true)}
             onPause={() => this.setPlaying(false)}
             onVolumeChange={() => this.setVolume()}
+            onTimeUpdate={() => this.setCurrentTime()}
           >
             Your browser does not support the audio tag.
           </audio>

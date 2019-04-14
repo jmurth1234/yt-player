@@ -33,7 +33,8 @@ module.exports = () => {
           channelUrl: info.author.channel_url,
           thumb: info.thumbnail_url,
           largeThumb: largeThumb.url,
-          id: info.video_id
+          id: info.video_id,
+          length: Number.parseInt(info.length_seconds)
         }
         if (!stream) {
           res.send(videoInfo)

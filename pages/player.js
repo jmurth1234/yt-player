@@ -5,7 +5,7 @@ import audioContext from '../lib/audio-context'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import Slider from 'rc-slider'
+import Slider, { Range } from 'rc-slider'
 
 const Player = () => {
   const {
@@ -13,12 +13,11 @@ const Player = () => {
     isPlaying,
     togglePlaying,
     volume,
+    currentTime,
+    currentBuffered,
+    setPosition,
     setVolume
   } = useContext(audioContext)
-
-  const sliderChanged = e => {
-    setVolume(e)
-  }
 
   const playingIcon = isPlaying ? faPause : faPlay
   return (
@@ -36,6 +35,20 @@ const Player = () => {
             <p>{nowPlaying.channelName}</p>
           </a>
         </div>
+
+        {nowPlaying.length != 0 && (
+          <div className="sliderContainer">
+            <Range
+              count={2}
+              min={0}
+              max={nowPlaying.length}
+              step={0.01}
+              defaultValue={[0, 0, 0]}
+              value={[0, currentTime, currentBuffered]}
+              onChange={pos => setPosition(pos[1])}
+            />
+          </div>
+        )}
       </div>
 
       <div className="controls">
@@ -53,7 +66,7 @@ const Player = () => {
             step={0.01}
             defaultValue={1}
             value={volume}
-            onChange={sliderChanged}
+            onChange={setVolume}
           />
         </div>
       </div>

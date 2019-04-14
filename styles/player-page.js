@@ -33,8 +33,10 @@ export default css`
   }
 
   .controls {
-    padding: 50px;
+    margin: 40px;
     width: 100%;
+    max-width: 500px;
+
     display: flex;
     justify-content: center;
     align-content: center;
@@ -44,7 +46,6 @@ export default css`
 
   .sliderContainer {
     width: 100%;
-    max-width: 500px;
     background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
@@ -55,7 +56,7 @@ export default css`
   }
 
   .buttons {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   button {
