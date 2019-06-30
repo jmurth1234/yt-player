@@ -64,6 +64,7 @@ module.exports = () => {
 
   router.get('/stream-youtube/:id', getVideo(true))
   router.post('/info', getVideo())
+  router.post('/info/:id', getVideo())
 
   return router
 }

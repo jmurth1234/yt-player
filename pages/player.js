@@ -1,23 +1,38 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import Head from '../components/head'
 import player from '../styles/player-page'
 import audioContext from '../lib/audio-context'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import axios from 'axios'
 
 import Slider, { Range } from 'rc-slider'
+const isClient = typeof window !== 'undefined'
 
-const Player = () => {
+const Player = ({ result }) => {
   const {
     nowPlaying,
     isPlaying,
     togglePlaying,
     volume,
     currentTime,
+    setNowPlaying,
     currentBuffered,
     setPosition,
     setVolume
   } = useContext(audioContext)
+
+  const url = result && `/api/stream-youtube/${result.id}`
+  useMemo(() => {
+    if (!url && nowPlaying.id === result.id) {
+      return
+    }
+
+    setNowPlaying({
+      ...result,
+      url
+    })
+  }, [url])
 
   const playingIcon = isPlaying ? faPause : faPlay
   return (
@@ -90,6 +105,25 @@ const Player = () => {
     `}</style>
     </div>
   )
+}
+
+Player.getInitialProps = async ({ query, res }) => {
+  const id = query && query.v
+
+  if (res && !id) {
+    res.redirect('/')
+  }
+
+  if (!id) {
+    return {}
+  }
+
+  const req = await axios.post(
+    `${isClient ? '' : 'http://127.0.0.1:3000'}/api/info/` + id,
+    {}
+  )
+  const result = await req.data
+  return { result }
 }
 
 export default Player

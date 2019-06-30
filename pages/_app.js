@@ -7,21 +7,6 @@ import { PageTransition } from 'next-page-transitions'
 
 import 'rc-slider/assets/index.css'
 class YTApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {}
-
-    // this will do I guess
-    if (ctx.res && ctx.res.req.url.includes('/player')) {
-      ctx.res.redirect('/')
-    }
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-    }
-
-    return { pageProps }
-  }
-
   state = {
     nowPlaying: {},
     playing: false,
