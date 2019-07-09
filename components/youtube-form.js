@@ -23,7 +23,7 @@ function Field({ id, label, error, children, ...props }) {
 
 function YouTubeForm() {
   const [res, sendRequest] = useNetwork('/api/info')
-  const url = res.data && `/api/stream-youtube/${res.data.id}`
+  const url = res.data && `/api/stream-youtube?id=${res.data.id}`
   const audio = useContext(audioContext)
 
   useMemo(() => {

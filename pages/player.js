@@ -22,7 +22,7 @@ const Player = ({ result }) => {
     setVolume
   } = useContext(audioContext)
 
-  const url = result && `/api/stream-youtube/${result.id}`
+  const url = result && `/api/stream-youtube?id=${result.id}`
   useMemo(() => {
     if (!url || nowPlaying.id === result.id) {
       return
