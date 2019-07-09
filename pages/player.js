@@ -118,10 +118,10 @@ Player.getInitialProps = async ({ query, res }) => {
     return {}
   }
 
-  const req = await axios.post(
-    `${isClient ? '' : 'http://127.0.0.1:' + process.env.PORT}/api/info`,
-    { url: `https://youtube.com/watch?v=${id}` }
-  )
+  const host = isClient ? '' : 'http://127.0.0.1:' + (process.env.PORT || 3000)
+  const req = await axios.post(`${host}/api/info`, {
+    url: `https://youtube.com/watch?v=${id}`
+  })
   const result = await req.data
   return { result }
 }
