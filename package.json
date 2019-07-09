@@ -1,9 +1,9 @@
 {
   "name": "yt-player",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "next start",
     "analyze": "BUNDLE_ANALYZE=both next build",
     "analyze:server": "BUNDLE_ANALYZE=server next build",
     "analyze:browser": "BUNDLE_ANALYZE=browser next build",
@@ -25,7 +25,7 @@
     "ffmpeg-static": "^2.4.0",
     "fluent-ffmpeg": "^2.1.2",
     "morgan": "^1.9.1",
-    "next": "^8.1.0",
+    "next": "^9.0.0",
     "next-compose-plugins": "^2.2.0",
     "next-page-transitions": "^1.0.0-beta.2",
     "rc-slider": "^8.6.13",

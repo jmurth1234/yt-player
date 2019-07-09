@@ -24,7 +24,7 @@ const Player = ({ result }) => {
 
   const url = result && `/api/stream-youtube/${result.id}`
   useMemo(() => {
-    if (!url && nowPlaying.id === result.id) {
+    if (!url || nowPlaying.id === result.id) {
       return
     }
 
@@ -119,8 +119,8 @@ Player.getInitialProps = async ({ query, res }) => {
   }
 
   const req = await axios.post(
-    `${isClient ? '' : 'http://127.0.0.1:3000'}/api/info/` + id,
-    {}
+    `${isClient ? '' : 'http://127.0.0.1:3000'}/api/info`,
+    { url: `https://youtube.com/watch?v=${id}` }
   )
   const result = await req.data
   return { result }
