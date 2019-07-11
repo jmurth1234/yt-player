@@ -67,6 +67,12 @@ export const nav = css`
     transform: translateY(-72px);
   }
 
+  .player {
+    background: none;
+    background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    box-shadow: none;
+  }
+
   ul {
     display: flex;
     justify-content: space-between;
@@ -89,5 +95,6 @@ export const nav = css`
     text-decoration: none;
     padding: 0 15px;
     font-size: 13px;
+    font-weight: bold;
   }
 `

@@ -17,6 +17,16 @@ export default css`
     box-shadow: 0px -2px 16px 8px rgba(0, 0, 0, 0.2);
   }
 
+  .song {
+    height: 72px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    text-decoration: none;
+    color: inherit;
+  }
+
   .offscreen {
     transform: translateY(72px);
   }

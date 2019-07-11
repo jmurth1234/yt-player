@@ -11,7 +11,7 @@ const links = [
 })
 
 const Nav = ({ hidden }) => {
-  const hiddenClass = hidden ? 'offscreen' : ''
+  const hiddenClass = hidden ? 'player' : ''
   return (
     <nav className={`fixedBar top ${hiddenClass}`}>
       <ul className="left">

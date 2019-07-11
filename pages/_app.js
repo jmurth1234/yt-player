@@ -23,7 +23,9 @@ class YTApp extends App {
   setCurrentTime = () => {
     this.setState({
       currentTime: this.audio.current.currentTime,
-      currentBuffered: this.audio.current.buffered.end(0)
+      currentBuffered: this.audio.current.buffered.length
+        ? this.audio.current.buffered.end(0)
+        : 0
     })
   }
 
