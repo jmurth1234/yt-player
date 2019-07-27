@@ -27,6 +27,7 @@ const Player = ({ result }) => {
   const url = result && `/api/stream-youtube?id=${result.id}`
 
   const [localPos, setLocalPos] = useState({ pos: 0, changing: false })
+  const [showingRelated, setRelated] = useState(false)
 
   useMemo(() => {
     if (!url || nowPlaying.id === result.id) {
@@ -49,14 +50,11 @@ const Player = ({ result }) => {
     setLocalPos({ changing: false })
   }
 
-  const playingIcon = isPlaying ? faPause : faPlay
+  const toggleRelated = () => {
+    setRelated(!showingRelated)
+  }
 
-  console.log(
-    localPos.changing ? localPos.pos : currentTime,
-    localPos.changing,
-    localPos.pos,
-    currentTime
-  )
+  const playingIcon = isPlaying ? faPause : faPlay
 
   return (
     <div className="center">
@@ -114,15 +112,28 @@ const Player = ({ result }) => {
             />
           </div>
         </div>
+
+        <div className="controls relatedButton">
+          <button className="secondary" onClick={toggleRelated}>
+            Show Related
+          </button>
+        </div>
       </div>
-      <div className="relatedArea infoArea">
-        <h3>Related</h3>
-        {nowPlaying.related &&
-          nowPlaying.related.map(video => (
-            <span className="songContainer">
-              <Song video={video} replace />
-            </span>
-          ))}
+      <div className={`relatedArea infoArea ${showingRelated && 'on-screen'}`}>
+        <div className="relatedHeader">
+          <h3>Related</h3>
+          <button className="secondary" onClick={toggleRelated}>
+            Close
+          </button>
+        </div>
+        <div className="relatedBody">
+          {nowPlaying.related &&
+            nowPlaying.related.map(video => (
+              <span className="songContainer">
+                <Song video={video} replace />
+              </span>
+            ))}
+        </div>
       </div>
 
       <style jsx>{player}</style>
@@ -139,18 +150,22 @@ const Player = ({ result }) => {
         width: 150%;
         height: 150%;
 
-        filter: blur(50px);
+        filter: blur(20px);
       }    
     `}</style>
     </div>
   )
 }
 
-Player.getInitialProps = async ({ query, res }) => {
+Player.getInitialProps = async context => {
+  const { query, res } = context
   const id = query && query.v
 
   if (res && !id) {
-    res.redirect('/')
+    res.writeHead(302, {
+      Location: '/'
+    })
+    res.end()
   }
 
   if (!id) {

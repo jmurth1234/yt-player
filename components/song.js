@@ -3,7 +3,11 @@ import audioStyle from '../styles/mini-player'
 import Link from 'next/link'
 
 const Song = ({ video, replace }) => (
-  <Link href={`/player?v=${video.id}`} replace={replace}>
+  <Link
+    href={replace ? `/player?v=${video.id}` : '/player'}
+    as={`/player?v=${video.id}`}
+    replace={replace}
+  >
     <a className="song">
       <img src={video.thumb} />
       <div className="cardInfo">

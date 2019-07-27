@@ -13,8 +13,9 @@ export default css`
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     box-shadow: 0px -2px 16px 8px rgba(0, 0, 0, 0.2);
+    min-width: 0;
   }
 
   .song {
@@ -32,7 +33,7 @@ export default css`
   }
 
   img {
-    flex: 0 0 100px;
+    flex: 0 1 100px;
     margin-right: 20px;
   }
 

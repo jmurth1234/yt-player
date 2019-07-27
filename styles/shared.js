@@ -35,9 +35,10 @@ export const row = css`
 `
 
 const bodyCss = `
-height: 100%;
-margin: 0;
-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 `
 
 export const nav = css`
@@ -59,16 +60,12 @@ export const nav = css`
     background-color: #2887a2;
     display: flex;
     height: 72px;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     ${shadow}
   }
 
-  .offscreen {
-    transform: translateY(-72px);
-  }
-
   .player {
-    background: none;
+    background-color: rgba(255, 255, 255, 0);
     background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
     box-shadow: none;
   }

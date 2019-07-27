@@ -3,7 +3,6 @@ import App, { Container } from 'next/app'
 import Nav from '../components/nav'
 import AudioContext from '../lib/audio-context'
 import Player from '../components/player'
-import { PageTransition } from 'next-page-transitions'
 
 import 'rc-slider/assets/index.css'
 class YTApp extends App {
@@ -59,12 +58,9 @@ class YTApp extends App {
       <AudioContext.Provider value={audioContext}>
         <Container>
           <Nav hidden={hidden} />
-          <PageTransition
-            timeout={200}
-            classNames="full-height page-transition"
-          >
+          <div className="full-height">
             <Component {...pageProps} key={router.route} />
-          </PageTransition>
+          </div>
           <Player hidden={hidden} />
 
           <audio

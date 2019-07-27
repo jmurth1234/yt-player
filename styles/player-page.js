@@ -12,7 +12,10 @@ export default css`
 
   .playerArea,
   .relatedArea {
+    max-height: calc(100vh - 72px);
     margin: 40px;
+    margin-top: 72px;
+
     max-width: 500px;
     display: flex;
     flex: 1 1 50%;
@@ -83,11 +86,92 @@ export default css`
     border-radius: 50px;
   }
 
+  .secondary {
+    padding: 10px;
+  }
+
   .songContainer {
     width: 100%;
   }
+
   .songContainer:hover {
     width: 100%;
     background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .relatedArea {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .relatedHeader {
+    display: flex;
+    width: 100%;
+    padding-left: 10px;
+    flex: 1 1 auto;
+  }
+
+  .relatedBody {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
+  .relatedHeader h3 {
+    flex: 1 1 100%;
+  }
+
+  .secondary {
+    display: none;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .center {
+      overflow: none;
+      display: flex;
+      flex-direction: row;
+      align-content: flex-start;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .playerArea {
+      margin: 0 auto;
+    }
+
+    .playerArea,
+    .relatedArea {
+      margin: 0;
+      margin-top: 72px;
+      max-width: 100vw;
+      display: flex;
+      flex: 1 1 100vw;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .relatedArea {
+      position: fixed;
+      left: 100vw;
+      transition: all 0.2s ease;
+    }
+
+    .on-screen {
+      left: 0;
+    }
+
+    .controls {
+      margin: 10px;
+    }
+
+    .buttons {
+      margin-bottom: 10px;
+    }
+    .secondary {
+      display: block;
+    }
   }
 `
