@@ -2,13 +2,13 @@ import React, { useContext, useMemo, useState } from 'react'
 import Head from '../components/head'
 import player from '../styles/player-page'
 import audioContext from '../lib/audio-context'
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
+import dynamic from 'next/dynamic'
 
 import Slider, { Range } from 'rc-slider'
 import Song from '../components/song'
 
+const PlayIcon = dynamic(() => import('../components/play-icon'))
 const isClient = typeof window !== 'undefined'
 
 const Player = ({ result }) => {
@@ -54,8 +54,6 @@ const Player = ({ result }) => {
     setRelated(!showingRelated)
   }
 
-  const playingIcon = isPlaying ? faPause : faPlay
-
   return (
     <div className="center">
       <Head title="Now Playing" />
@@ -96,7 +94,7 @@ const Player = ({ result }) => {
         <div className="controls">
           <div className="buttons">
             <button className="primary" onClick={togglePlaying}>
-              <FontAwesomeIcon size="lg" icon={playingIcon} />
+              <PlayIcon isPlaying={isPlaying} />
             </button>
           </div>
 
