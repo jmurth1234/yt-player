@@ -1,10 +1,8 @@
-import React, { Fragment, useContext, useMemo } from 'react'
+import React, { Fragment, useContext, useMemo, useState } from 'react'
 import { container, field } from '../styles/form'
 import { row } from '../styles/shared'
 
-import useFormal from '@kevinwolf/formal-web'
 import useNetwork from '../lib/use-network'
-import * as yup from 'yup'
 import audioContext from '../lib/audio-context'
 
 function Field({ id, label, error, children, ...props }) {
@@ -25,6 +23,7 @@ function YouTubeForm() {
   const [res, sendRequest] = useNetwork('/api/info')
   const url = res.data && `/api/stream-youtube?id=${res.data.id}`
   const audio = useContext(audioContext)
+  const [youtubeUrl, setUrl] = useState()
 
   useMemo(() => {
     if (!url) {
@@ -37,34 +36,25 @@ function YouTubeForm() {
     })
   }, [url])
 
-  const schema = useMemo(() => {
-    try {
-      return yup.object().shape({
-        url: yup
-          .string()
-          .url()
-          .required()
-      })
-    } catch (e) {
-      return null
-    }
-  })
+  const onSubmit = e => {
+    e.preventDefault()
+    sendRequest({ url: youtubeUrl })
+  }
 
-  const formal = useFormal(
-    {},
-    {
-      schema,
-      onSubmit: sendRequest
-    }
-  )
+  const onChange = e => {
+    setUrl(e.target.value)
+  }
 
   return (
     <Fragment>
-      <form {...formal.getFormProps()} className="row">
-        <Field label="Youtube URL" {...formal.getFieldProps('url')}>
-          <button {...formal.getSubmitButtonProps()} type="submit">
-            Submit
-          </button>
+      <form onSubmit={onSubmit} className="row">
+        <Field
+          id="youtubeUrl"
+          label="Youtube URL"
+          onInput={onChange}
+          value={youtubeUrl}
+        >
+          <button type="submit">Submit</button>
         </Field>
       </form>
 
