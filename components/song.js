@@ -9,7 +9,9 @@ const Song = ({ video, replace }) => (
     replace={replace}
   >
     <a className="song">
-      <img src={video.thumb} />
+      <div className="inner">
+        <img src={video.thumb} />
+      </div>
       <div className="cardInfo">
         <p className="cardTitle">{video.title}</p>
         <p>{video.channelName}</p>
