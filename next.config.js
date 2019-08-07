@@ -5,4 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const withCSS = require('@zeit/next-css')
 const composePlugins = require('next-compose-plugins')
 
-module.exports = composePlugins([withCSS, withBundleAnalyzer], {})
+module.exports = composePlugins([withCSS, withBundleAnalyzer], {
+  experimental: { modern: true }
+})
