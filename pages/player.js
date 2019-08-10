@@ -180,7 +180,7 @@ Player.getInitialProps = async context => {
   const url = `https://youtube.com/watch?v=${id}`
   let result
   if (isClient) {
-    const req = await axios.post(`/api/info`, {})
+    const req = await axios.post(`/api/info`, { url })
     result = await req.data
   } else {
     result = await getYoutube(url)
