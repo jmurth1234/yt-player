@@ -3,7 +3,7 @@
   "build": {
     "env": {
       "FLUENTFFMPEG_COV": "0",
-      "IS_NOW": true
+      "IS_NOW": "1"
     }
   }
 }
