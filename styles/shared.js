@@ -87,7 +87,7 @@ export const nav = css`
     align-items: center;
   }
 
-  a {
+  a, span {
     color: rgb(241, 241, 241);
     text-decoration: none;
     padding: 0 15px;

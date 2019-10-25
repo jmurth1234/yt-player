@@ -23,13 +23,17 @@ const Nav = ({ hidden }) => {
       </ul>
 
       <ul>
-        {links.map(({ key, href, label }) => (
-          <li key={key}>
-            <Link href={href}>
-              <a>{label}</a>
-            </Link>
-          </li>
-        ))}
+        {links.map(({ key, href, label }) => {
+          const LinkComponent = () => href.startsWith('http') 
+            ? <a href={href} target="_blank">{label}</a>
+            : <Link href={href}><a>{label}</a></Link>
+
+          return (
+            <li key={key}>
+              <LinkComponent />
+            </li>
+          )
+        })}
       </ul>
 
       <style jsx>{fixedBar}</style>

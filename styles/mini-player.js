@@ -63,6 +63,7 @@ export default css`
     background: rgba(255, 255, 255, 0.5);
     flex: 0 0 72px;
     border: 0px solid;
+    padding: 20px;
   }
 
   svg g g path {
@@ -75,6 +76,7 @@ export default css`
       position: absolute;
       width: 48px;
       height: 48px;
+      padding: 10px;
       top: 50%;
       transform: translate(70%, -50%);
     }

@@ -78,6 +78,7 @@ export default css`
     background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.2);
     border: 0;
+    padding: 20px;
   }
 
   .primary {
