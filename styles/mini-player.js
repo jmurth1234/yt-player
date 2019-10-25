@@ -32,13 +32,22 @@ export default css`
     transform: translateY(72px);
   }
 
-  img {
+  .inner {
     flex: 0 1 100px;
-    margin-right: 20px;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+  }
+
+  img {
+    flex: 0 1 auto;
+    height: 100%;
   }
 
   .cardInfo {
-    flex: 1;
+    margin-left: 20px;
+    flex: 1 1 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;

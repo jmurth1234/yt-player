@@ -55,6 +55,11 @@ export const nav = css`
     ${bodyCss}
   }
 
+  :global(.fa-sm) {
+    height: 50%;
+    line-height: 0.75em;
+  }
+
   nav {
     text-align: center;
     background-color: #2887a2;

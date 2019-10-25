@@ -1,3 +1,3 @@
-import getVideo from '../../lib/youtube-retriever'
+import { getInfo } from '../../lib/youtube-retriever'
 
-export default getVideo(false)
+export default getInfo

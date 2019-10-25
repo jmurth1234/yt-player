@@ -21,7 +21,12 @@ function Field({ id, label, error, children, ...props }) {
 
 function YouTubeForm() {
   const [res, sendRequest] = useNetwork('/api/info')
-  const url = res.data && `/api/stream-youtube?id=${res.data.id}`
+  const url =
+    res.data &&
+    `${
+      process.env.IS_NOW ? 'https://yt-player.rymate.co.uk' : ''
+    }/api/stream-youtube?id=${res.data.id}`
+
   const audio = useContext(audioContext)
   const [youtubeUrl, setUrl] = useState()
 

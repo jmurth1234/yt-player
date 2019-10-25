@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "build": {
+    "env": {
+      "FLUENTFFMPEG_COV": "0",
+      "IS_NOW": "1"
+    }
+  },
+  "env": {
+    "port": "3000"
+  }
+}

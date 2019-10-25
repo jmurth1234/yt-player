@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 
 import Slider, { Range } from 'rc-slider'
 import Song from '../components/song'
+import { getYoutube } from '../lib/youtube-retriever'
 
 const PlayIcon = dynamic(() => import('../components/play-icon'))
 const isClient = typeof window !== 'undefined'
@@ -24,7 +25,13 @@ const Player = ({ result }) => {
     setVolume
   } = useContext(audioContext)
 
-  const url = result && `/api/stream-youtube?id=${result.id}`
+  const currentSong = { ...result, ...nowPlaying }
+
+  const url =
+    result &&
+    `${
+      process.env.IS_NOW ? 'https://yt-player.rymate.co.uk' : ''
+    }/api/stream-youtube?id=${result.id}`
 
   const [localPos, setLocalPos] = useState({ pos: 0, changing: false })
   const [showingRelated, setRelated] = useState(false)
@@ -61,22 +68,22 @@ const Player = ({ result }) => {
       <div className="playerArea">
         <div className="infoArea">
           <div>
-            <img src={nowPlaying.thumb} />
+            <img src={currentSong.thumb} />
           </div>
 
           <div className="hero">
             <h3 className="title">{nowPlaying.title}</h3>
-            <a href={nowPlaying.channelUrl} className="description">
-              <p>{nowPlaying.channelName}</p>
+            <a href={currentSong.channelUrl} className="description">
+              <p>{currentSong.channelName}</p>
             </a>
           </div>
 
-          {nowPlaying.length != 0 && (
+          {currentSong.length != 0 && (
             <div className="sliderContainer">
               <Range
                 count={2}
                 min={0}
-                max={nowPlaying.length}
+                max={currentSong.length}
                 step={0.01}
                 defaultValue={[0, 0, 0]}
                 value={[
@@ -125,8 +132,8 @@ const Player = ({ result }) => {
           </button>
         </div>
         <div className="relatedBody">
-          {nowPlaying.related &&
-            nowPlaying.related.map(video => (
+          {currentSong.related &&
+            currentSong.related.map(video => (
               <span className="songContainer">
                 <Song video={video} replace />
               </span>
@@ -142,7 +149,7 @@ const Player = ({ result }) => {
         z-index: -1;
 
         display: block;
-        background-image: url('${nowPlaying.thumb}');
+        background-image: url('${currentSong.thumb}');
         background-size: cover;
         background-position: center; 
         width: 150%;
@@ -170,11 +177,15 @@ Player.getInitialProps = async context => {
     return {}
   }
 
-  const host = isClient ? '' : 'http://127.0.0.1:' + (process.env.PORT || 3000)
-  const req = await axios.post(`${host}/api/info`, {
-    url: `https://youtube.com/watch?v=${id}`
-  })
-  const result = await req.data
+  const url = `https://youtube.com/watch?v=${id}`
+  let result
+  if (isClient) {
+    const req = await axios.post(`/api/info`, { url })
+    result = await req.data
+  } else {
+    result = await getYoutube(url)
+    res.setHeader('Cache-Control', 's-maxage=0, stale-while-revalidate')
+  }
   return { result }
 }
 
