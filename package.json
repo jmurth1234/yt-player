@@ -20,13 +20,13 @@
     "eslint-config-prettier": "^6.4.0",
     "ffmpeg-static": "^2.7.0",
     "fluent-ffmpeg": "^2.1.2",
-    "next": "9.1.1",
+    "next": "9.2.2",
     "next-compose-plugins": "^2.2.0",
     "next-page-transitions": "^1.0.0-beta.2",
     "rc-slider": "^8.7.1",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "ytdl-core": "^1.0.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "ytdl-core": "^2.0.0",
     "yup": "^0.27.0"
   },
   "devDependencies": {
