@@ -24,7 +24,7 @@ function YouTubeForm() {
   const url =
     res.data &&
     `${
-      process.env.IS_NOW ? 'https://yt-player.rymate.co.uk' : ''
+      process.env.IS_NOW ? 'https://yt-player-app.herokuapp.com' : ''
     }/api/stream-youtube?id=${res.data.id}`
 
   const audio = useContext(audioContext)

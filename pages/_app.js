@@ -1,5 +1,5 @@
 import React from 'react'
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import Nav from '../components/nav'
 import AudioContext from '../lib/audio-context'
 import Player from '../components/player'
@@ -56,7 +56,7 @@ class YTApp extends App {
 
     return (
       <AudioContext.Provider value={audioContext}>
-        <Container>
+        <>
           <Nav hidden={hidden} />
           <div className="full-height">
             <Component {...pageProps} key={router.route} />
@@ -94,7 +94,7 @@ class YTApp extends App {
               transition: opacity 200ms;
             }
           `}</style>
-        </Container>
+        </>
       </AudioContext.Provider>
     )
   }

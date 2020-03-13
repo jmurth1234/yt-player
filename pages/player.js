@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState } from 'react'
 import Head from '../components/head'
 import player from '../styles/player-page'
 import audioContext from '../lib/audio-context'
-import axios from 'axios'
 import dynamic from 'next/dynamic'
 
 import Slider, { Range } from 'rc-slider'
@@ -10,7 +9,6 @@ import Song from '../components/song'
 import { getYoutube } from '../lib/youtube-retriever'
 
 const PlayIcon = dynamic(() => import('../components/play-icon'))
-const isClient = typeof window !== 'undefined'
 
 const Player = ({ result }) => {
   const {
@@ -30,7 +28,7 @@ const Player = ({ result }) => {
   const url =
     result &&
     `${
-      process.env.IS_NOW ? 'https://yt-player.rymate.co.uk' : ''
+      process.env.IS_NOW ? 'https://yt-player-app.herokuapp.com' : ''
     }/api/stream-youtube?id=${result.id}`
 
   const [localPos, setLocalPos] = useState({ pos: 0, changing: false })
@@ -162,7 +160,7 @@ const Player = ({ result }) => {
   )
 }
 
-Player.getInitialProps = async context => {
+export async function getServerSideProps(context) {
   const { query, res } = context
   const id = query && query.v
 
@@ -178,15 +176,10 @@ Player.getInitialProps = async context => {
   }
 
   const url = `https://youtube.com/watch?v=${id}`
-  let result
-  if (isClient) {
-    const req = await axios.post(`/api/info`, { url })
-    result = await req.data
-  } else {
-    result = await getYoutube(url)
-    res.setHeader('Cache-Control', 's-maxage=0, stale-while-revalidate')
-  }
-  return { result }
+  const result = await getYoutube(url)
+
+  res.setHeader('Cache-Control', 's-maxage=0, stale-while-revalidate')
+  return { props: { result } }
 }
 
 export default Player

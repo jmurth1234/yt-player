@@ -1,6 +1,6 @@
 import { getFromRequest } from '../../../lib/youtube-retriever'
 import ffmpeg, { setFfmpegPath } from 'fluent-ffmpeg'
-import { path } from 'ffmpeg-static'
+import path from 'ffmpeg-static'
 setFfmpegPath(path)
 
 export default async (req, res) => {

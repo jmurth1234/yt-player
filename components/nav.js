@@ -16,7 +16,7 @@ const Nav = ({ hidden }) => {
     <nav className={`fixedBar top ${hiddenClass}`}>
       <ul className="left">
         <li>
-          <Link prefetch href="/">
+          <Link href="/">
             <a>Home</a>
           </Link>
         </li>
@@ -24,9 +24,16 @@ const Nav = ({ hidden }) => {
 
       <ul>
         {links.map(({ key, href, label }) => {
-          const LinkComponent = () => href.startsWith('http') 
-            ? <a href={href} target="_blank">{label}</a>
-            : <Link href={href}><a>{label}</a></Link>
+          const LinkComponent = () =>
+            href.startsWith('http') ? (
+              <a href={href} target="_blank">
+                {label}
+              </a>
+            ) : (
+              <Link href={href}>
+                <a>{label}</a>
+              </Link>
+            )
 
           return (
             <li key={key}>
