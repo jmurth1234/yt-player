@@ -71,6 +71,7 @@ class YTApp extends App {
             onPause={() => this.setPlaying(false)}
             onVolumeChange={() => this.setVolume()}
             onTimeUpdate={() => this.setCurrentTime()}
+            preload='auto'
           >
             Your browser does not support the audio tag.
           </audio>
