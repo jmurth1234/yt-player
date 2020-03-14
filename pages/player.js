@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import Slider, { Range } from 'rc-slider'
 import Song from '../components/song'
 import { getYoutube } from '../lib/youtube-retriever'
+import getAudioUrl from '../lib/audio-url'
 
 const PlayIcon = dynamic(() => import('../components/play-icon'))
 
@@ -25,11 +26,7 @@ const Player = ({ result }) => {
 
   const currentSong = { ...result, ...nowPlaying }
 
-  const url =
-    result &&
-    `${
-      process.env.IS_NOW ? 'https://yt-player-app.herokuapp.com' : ''
-    }/api/stream-youtube?id=${result.id}`
+  const url = getAudioUrl(result)
 
   const [localPos, setLocalPos] = useState({ pos: 0, changing: false })
   const [showingRelated, setRelated] = useState(false)

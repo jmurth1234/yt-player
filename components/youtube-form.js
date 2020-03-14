@@ -4,6 +4,7 @@ import { row } from '../styles/shared'
 
 import useNetwork from '../lib/use-network'
 import audioContext from '../lib/audio-context'
+import getAudioUrl from '../lib/audio-url'
 
 function Field({ id, label, error, children, ...props }) {
   return (
@@ -20,12 +21,8 @@ function Field({ id, label, error, children, ...props }) {
 }
 
 function YouTubeForm() {
-  const [res, sendRequest] = useNetwork('/api/info')
-  const url =
-    res.data &&
-    `${
-      process.env.IS_NOW ? 'https://yt-player-app.herokuapp.com' : ''
-    }/api/stream-youtube?id=${res.data.id}`
+  const { error, data, isLoading, callAPI } = useNetwork('/api/info')
+  const url = getAudioUrl(data)
 
   const audio = useContext(audioContext)
   const [youtubeUrl, setUrl] = useState()
@@ -35,15 +32,12 @@ function YouTubeForm() {
       return
     }
 
-    audio.setNowPlaying({
-      ...res.data,
-      url
-    })
+    audio.setNowPlaying({ ...data, url })
   }, [url])
 
   const onSubmit = e => {
     e.preventDefault()
-    sendRequest({ url: youtubeUrl })
+    callAPI({ url: youtubeUrl })
   }
 
   const onChange = e => {
@@ -63,12 +57,12 @@ function YouTubeForm() {
         </Field>
       </form>
 
-      {res.isLoading && <div className="row">Loading...</div>}
+      {isLoading && <div className="row">Loading...</div>}
 
-      {!res.isLoading && res.error && (
+      {!isLoading && error && (
         <div className="row error">
           <h2>Could not get video</h2>
-          <p>{res.error.message}</p>
+          <p>{error.message}</p>
         </div>
       )}
 
