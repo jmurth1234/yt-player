@@ -2,12 +2,8 @@ import React from 'react'
 import audioStyle from '../styles/mini-player'
 import Link from 'next/link'
 
-const Song = ({ video, replace }) => (
-  <Link
-    href={replace ? `/player?v=${video.id}` : '/player'}
-    as={`/player?v=${video.id}`}
-    replace={replace}
-  >
+const Song = ({ video, replace, onClick }) => {
+  const link = (
     <a className="song">
       <div className="inner">
         <img src={video.thumb} />
@@ -18,7 +14,20 @@ const Song = ({ video, replace }) => (
       </div>
       <style jsx>{audioStyle}</style>
     </a>
-  </Link>
-)
+  )
 
+  if (onClick) {
+    return (
+      <div onClick={onClick}>
+        {link}
+      </div>
+    )
+  }
+
+  return (
+    <Link href={`/player?v=${video.id}`} replace={replace}>
+      {link}
+    </Link>
+  )
+}
 export default Song

@@ -175,7 +175,6 @@ export async function getServerSideProps(context) {
   const url = `https://youtube.com/watch?v=${id}`
   const result = await getYoutube(url)
 
-  res.setHeader('Cache-Control', 's-maxage=0, stale-while-revalidate')
   return { props: { result } }
 }
 
