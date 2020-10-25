@@ -26,7 +26,6 @@ kind: Deployment
 metadata:
   name: yt-player
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: yt-player
@@ -42,3 +41,15 @@ spec:
         ports:
         - containerPort: 3000
           protocol: TCP
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: yt-player-scaler
+spec:
+  scaleTargetRef:
+    kind: ReplicaSet
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 50
