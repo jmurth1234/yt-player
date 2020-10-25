@@ -15,6 +15,8 @@ RUN yarn
 
 COPY . /opt/app
 
+RUN cat package.json
+RUN ls
 RUN yarn build
 
 RUN addgroup -g 1001 -S nodejs
