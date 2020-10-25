@@ -2,7 +2,6 @@ FROM node:alpine
 
 RUN mkdir -p /opt/app
 RUN apk add --no-cache libc6-compat
-ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
 
@@ -15,8 +14,7 @@ RUN yarn
 
 COPY . /opt/app
 
-RUN cat package.json
-RUN ls
+ENV NODE_ENV production
 RUN yarn build
 
 RUN addgroup -g 1001 -S nodejs
