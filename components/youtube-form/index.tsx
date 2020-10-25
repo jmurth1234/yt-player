@@ -1,21 +1,19 @@
 import React, { Fragment, useContext, useMemo, useState } from 'react'
-import { container, field } from '../styles/form'
-import { row } from '../styles/shared'
+import styles from './Form.module.scss'
 
-import useNetwork from '../lib/use-network'
-import audioContext from '../lib/audio-context'
-import getAudioUrl from '../lib/audio-url'
-import Song from './song'
+import useNetwork from '../../lib/use-network'
+import audioContext from '../../lib/audio-context'
+import getAudioUrl from '../../lib/audio-url'
+import Song from '../song'
 
 function Field({ id, label, children, ...props }) {
   return (
-    <div>
+    <div className={styles.field}>
       <label htmlFor={id}>{label}</label>
-      <div className="inlineField">
+      <div className={styles.inlineField}>
         <input id={id} type="text" {...props} />
         {children}
       </div>
-      <style jsx>{field}</style>
     </div>
   )
 }
@@ -55,7 +53,7 @@ function YouTubeForm() {
   }
 
   return (
-    <Fragment>
+    <div className={styles.container}>
       <form onSubmit={onSubmit} className="row">
         <Field
           id="youtubeRequest"
@@ -70,7 +68,7 @@ function YouTubeForm() {
       {isLoading && <div className="row">Loading...</div>}
 
       {!isLoading && error && (
-        <div className="">
+        <div className="row">
           <h2>Could not get video</h2>
           <p>{error.message}</p>
         </div>
@@ -89,10 +87,7 @@ function YouTubeForm() {
           ))}
         </div>
       )}
-
-      <style jsx>{row}</style>
-      <style jsx>{container}</style>
-    </Fragment>
+    </div>
   )
 }
 

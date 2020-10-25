@@ -1,0 +1,40 @@
+.nav {
+  text-align: center;
+  background-color: #2887a2;
+  display: flex;
+  height: 72px;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+  }
+
+  .left {
+    flex: 1 1 100%;
+  }
+
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  a,
+  span {
+    color: rgb(241, 241, 241);
+    text-decoration: none;
+    padding: 0 15px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+}
+
+.player {
+  background-color: rgba(255, 255, 255, 0);
+  background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  box-shadow: none;
+}

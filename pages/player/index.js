@@ -1,15 +1,16 @@
-import React, { useContext, useMemo, useState } from 'react'
-import Head from '../components/head'
-import player from '../styles/player-page'
-import audioContext from '../lib/audio-context'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import Head from '../../components/head'
+import classNames from 'classnames'
+import audioContext from '../../lib/audio-context'
 import dynamic from 'next/dynamic'
 
 import Slider, { Range } from 'rc-slider'
-import Song from '../components/song'
-import { getYoutube } from '../lib/youtube-retriever'
-import getAudioUrl from '../lib/audio-url'
+import Song from '../../components/song'
+import { getYoutube } from '../../lib/youtube-retriever'
+import getAudioUrl from '../../lib/audio-url'
+import styles from './Player.module.scss'
 
-const PlayIcon = dynamic(() => import('../components/play-icon'))
+const PlayIcon = dynamic(() => import('../../components/play-icon'))
 
 const Player = ({ result }) => {
   const {
@@ -21,7 +22,7 @@ const Player = ({ result }) => {
     setNowPlaying,
     currentBuffered,
     setPosition,
-    setVolume
+    setVolume,
   } = useContext(audioContext)
 
   const currentSong = { ...result, ...nowPlaying }
@@ -38,12 +39,12 @@ const Player = ({ result }) => {
 
     setNowPlaying({
       ...result,
-      url
+      url,
     })
     setLocalPos({ pos: 0, changing: false })
   }, [url])
 
-  const changeVal = pos => {
+  const changeVal = (pos) => {
     setLocalPos({ pos: pos[1], changing: true })
   }
 
@@ -57,24 +58,24 @@ const Player = ({ result }) => {
   }
 
   return (
-    <div className="center">
+    <div className={classNames(styles.container, 'container')}>
       <Head title="Now Playing" />
 
-      <div className="playerArea">
-        <div className="infoArea">
+      <div className={classNames(styles.area, styles.playerArea)}>
+        <div className={styles.infoArea}>
           <div>
             <img src={currentSong.thumb} />
           </div>
 
-          <div className="hero">
-            <h3 className="title">{nowPlaying.title}</h3>
-            <a href={currentSong.channelUrl} className="description">
+          <div className={styles.hero}>
+            <h3>{nowPlaying.title}</h3>
+            <a href={currentSong.channelUrl}>
               <p>{currentSong.channelName}</p>
             </a>
           </div>
 
           {currentSong.length != 0 && (
-            <div className="sliderContainer">
+            <div className={styles.sliderContainer}>
               <Range
                 count={2}
                 min={0}
@@ -84,7 +85,7 @@ const Player = ({ result }) => {
                 value={[
                   0,
                   localPos.changing ? localPos.pos : currentTime,
-                  currentBuffered
+                  currentBuffered,
                 ]}
                 onChange={changeVal}
                 onAfterChange={setVal}
@@ -93,14 +94,14 @@ const Player = ({ result }) => {
           )}
         </div>
 
-        <div className="controls">
-          <div className="buttons">
-            <button className="primary" onClick={togglePlaying}>
+        <div className={styles.controls}>
+          <div className={styles.buttons}>
+            <button className={styles.primary} onClick={togglePlaying}>
               <PlayIcon isPlaying={isPlaying} />
             </button>
           </div>
 
-          <div className="sliderContainer">
+          <div className={styles.sliderContainer}>
             <label>Volume: {Math.round(volume * 100)}</label>
             <Slider
               min={0}
@@ -113,46 +114,49 @@ const Player = ({ result }) => {
           </div>
         </div>
 
-        <div className="controls relatedButton">
-          <button className="secondary" onClick={toggleRelated}>
+        <div className={classNames(styles.controls, styles.secondary)}>
+          <button className={styles.secondary} onClick={toggleRelated}>
             Show Related
           </button>
         </div>
       </div>
-      <div className={`relatedArea infoArea ${showingRelated && 'on-screen'}`}>
-        <div className="relatedHeader">
+      <div
+        className={classNames(styles.area, styles.infoArea, styles.relatedArea, {
+          [styles.onScreen]: showingRelated,
+        })}
+      >
+        <div className={styles.relatedHeader}>
           <h3>Related</h3>
-          <button className="secondary" onClick={toggleRelated}>
+          <button className={styles.secondary} onClick={toggleRelated}>
             Close
           </button>
         </div>
-        <div className="relatedBody">
+        <div className={styles.relatedBody}>
           {currentSong.related &&
             currentSong.related.map((video, i) => (
-              <span className="songContainer" key={i}>
+              <span className={styles.songContainer} key={i}>
                 <Song video={video} replace />
               </span>
             ))}
         </div>
       </div>
 
-      <style jsx>{player}</style>
       <style jsx>{`
-      .center:before {
-        content: "";
-        position: fixed;
-        z-index: -1;
+        .container:before {
+          content: '';
+          position: fixed;
+          z-index: -1;
 
-        display: block;
-        background-image: url('${currentSong.thumb}');
-        background-size: cover;
-        background-position: center; 
-        width: 150%;
-        height: 150%;
+          display: block;
+          background-image: url('${currentSong.thumb}');
+          background-size: cover;
+          background-position: center;
+          width: 150%;
+          height: 150%;
 
-        filter: blur(20px);
-      }    
-    `}</style>
+          filter: blur(20px);
+        }
+      `}</style>
     </div>
   )
 }
@@ -163,7 +167,7 @@ export async function getServerSideProps(context) {
 
   if (res && !id) {
     res.writeHead(302, {
-      Location: '/'
+      Location: '/',
     })
     res.end()
   }

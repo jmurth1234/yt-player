@@ -4,6 +4,8 @@ import AudioContext from '../lib/audio-context'
 import Player from '../components/player'
 
 import 'rc-slider/assets/index.css'
+import '../styles/global.scss'
+
 import { AppProps } from 'next/app'
 
 class YTApp extends React.Component<AppProps> {
@@ -80,23 +82,7 @@ class YTApp extends React.Component<AppProps> {
           </audio>
 
           <style jsx global>{`
-            .full-height {
-              height: 100%;
-            }
-            .page-transition-enter {
-              opacity: 0;
-            }
-            .page-transition-enter-active {
-              opacity: 1;
-              transition: opacity 200ms;
-            }
-            .page-transition-exit {
-              opacity: 1;
-            }
-            .page-transition-exit-active {
-              opacity: 0;
-              transition: opacity 200ms;
-            }
+
           `}</style>
         </>
       </AudioContext.Provider>

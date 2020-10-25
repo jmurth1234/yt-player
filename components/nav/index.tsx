@@ -1,20 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
-import { nav, fixedBar } from '../styles/shared'
+
+import styles from './Nav.module.scss'
+import classNames from 'classnames'
 
 const links = [
   { href: '/about', label: 'About' },
   { href: 'https://github.com/rymate1234/yt-player', label: 'GitHub' }
-].map(link => {
-  link.key = `nav-link-${link.href}-${link.label}`
-  return link
-})
+]
 
 const Nav = ({ hidden }) => {
-  const hiddenClass = hidden ? 'player' : ''
   return (
-    <nav className={`fixedBar top ${hiddenClass}`}>
-      <ul className="left">
+    <nav className={classNames(styles.nav, { [styles.player]: hidden })}>
+      <ul className={styles.left}>
         <li>
           <Link href="/">
             <a>Home</a>
@@ -23,7 +21,7 @@ const Nav = ({ hidden }) => {
       </ul>
 
       <ul>
-        {links.map(({ key, href, label }) => {
+        {links.map(({ href, label }, i) => {
           const LinkComponent = () =>
             href.startsWith('http') ? (
               <a href={href} target="_blank">
@@ -36,17 +34,16 @@ const Nav = ({ hidden }) => {
             )
 
           return (
-            <li key={key}>
+            <li key={i}>
               <LinkComponent />
             </li>
           )
         })}
       </ul>
-
-      <style jsx>{fixedBar}</style>
-      <style jsx>{nav}</style>
     </nav>
   )
 }
 
 export default Nav
+
+
