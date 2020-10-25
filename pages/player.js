@@ -128,8 +128,8 @@ const Player = ({ result }) => {
         </div>
         <div className="relatedBody">
           {currentSong.related &&
-            currentSong.related.map(video => (
-              <span className="songContainer">
+            currentSong.related.map((video, i) => (
+              <span className="songContainer" key={i}>
                 <Song video={video} replace />
               </span>
             ))}

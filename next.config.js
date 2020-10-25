@@ -2,10 +2,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: !!process.env.ANALYZE
 })
 
-const withCSS = require('@zeit/next-css')
 const composePlugins = require('next-compose-plugins')
 
-module.exports = composePlugins([withCSS, withBundleAnalyzer], {
+module.exports = composePlugins([withBundleAnalyzer], {
   experimental: { modern: true },
   webpack: (config, { webpack }) => {
     // Note: we provide webpack above so you should not `require` it

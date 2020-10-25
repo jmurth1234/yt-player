@@ -2,7 +2,6 @@ FROM node:alpine
 
 RUN mkdir -p /opt/app
 RUN apk add --no-cache libc6-compat
-RUN npm install -g yarn
 ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
@@ -10,7 +9,7 @@ EXPOSE 3000
 WORKDIR /opt/app
 
 COPY package.json /opt/app
-COPY package-lock.json /opt/app
+COPY yarn.lock /opt/app
 
 RUN yarn
 
