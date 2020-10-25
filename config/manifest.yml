@@ -3,6 +3,8 @@ kind: Service
 apiVersion: v1
 metadata:
   name: yt-player
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-hostname: "yt-player.rymate.co.uk"
 spec:
   type: LoadBalancer
   selector:
@@ -29,6 +31,7 @@ spec:
     spec:
       containers:
       - name: nextjs
+        imagePullPolicy: Always
         image: ghcr.io/rymate1234/yt-player:latest
         ports:
         - containerPort: 3000
