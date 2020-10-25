@@ -26,6 +26,7 @@ kind: Deployment
 metadata:
   name: yt-player
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: yt-player
@@ -48,7 +49,8 @@ metadata:
   name: yt-player-scaler
 spec:
   scaleTargetRef:
-    kind: ReplicaSet
+    apiVersion: apps/v1
+    kind: Deployment
     name: yt-player
   minReplicas: 1
   maxReplicas: 2
