@@ -1,0 +1,35 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: yt-player
+spec:
+  type: LoadBalancer
+  selector:
+    app: yt-player
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yt-player
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yt-player
+  template:
+    metadata:
+      labels:
+        app: yt-player
+    spec:
+      containers:
+      - name: nextjs
+        image: ghcr.io/rymate1234/yt-player:latest
+        ports:
+        - containerPort: 3000
+          protocol: TCP

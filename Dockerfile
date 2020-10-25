@@ -22,4 +22,4 @@ RUN adduser -S nextjs -u 1001
 
 USER nextjs
 
-CMD [ "npm", "start" ]
+CMD yarn start
