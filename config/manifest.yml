@@ -5,6 +5,8 @@ metadata:
   name: yt-player
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-hostname: "yt-player.rymate.co.uk"
+    service.beta.kubernetes.io/do-loadbalancer-tls-ports: "443"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "ec27db0e-2984-46aa-aa74-59da71c05610"
 spec:
   type: LoadBalancer
   selector:
@@ -13,6 +15,10 @@ spec:
     - name: http
       protocol: TCP
       port: 80
+      targetPort: 3000
+    - name: https
+      protocol: TCP
+      port: 443
       targetPort: 3000
 ---
 apiVersion: apps/v1
