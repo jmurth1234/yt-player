@@ -25,7 +25,7 @@ const Player = ({ result }) => {
     setVolume,
   } = useContext(audioContext)
 
-  const currentSong = { ...result, ...nowPlaying }
+  const currentSong = { ...nowPlaying, ...result }
 
   const url = getAudioUrl(result)
 
@@ -68,7 +68,7 @@ const Player = ({ result }) => {
           </div>
 
           <div className={styles.hero}>
-            <h3>{nowPlaying.title}</h3>
+            <h3>{currentSong.title}</h3>
             <a href={currentSong.channelUrl}>
               <p>{currentSong.channelName}</p>
             </a>
@@ -120,26 +120,33 @@ const Player = ({ result }) => {
           </button>
         </div>
       </div>
-      <div
-        className={classNames(styles.area, styles.infoArea, styles.relatedArea, {
-          [styles.onScreen]: showingRelated,
-        })}
-      >
-        <div className={styles.relatedHeader}>
-          <h3>Related</h3>
-          <button className={styles.secondary} onClick={toggleRelated}>
-            Close
-          </button>
+      {currentSong.related && (
+        <div
+          className={classNames(
+            styles.area,
+            styles.infoArea,
+            styles.relatedArea,
+            {
+              [styles.onScreen]: showingRelated,
+            }
+          )}
+        >
+          <div className={styles.relatedHeader}>
+            <h3>Related</h3>
+            <button className={styles.secondary} onClick={toggleRelated}>
+              Close
+            </button>
+          </div>
+          <div className={styles.relatedBody}>
+            {currentSong.related &&
+              currentSong.related.map((video, i) => (
+                <span className={styles.songContainer} key={i}>
+                  <Song video={video} replace />
+                </span>
+              ))}
+          </div>
         </div>
-        <div className={styles.relatedBody}>
-          {currentSong.related &&
-            currentSong.related.map((video, i) => (
-              <span className={styles.songContainer} key={i}>
-                <Song video={video} replace />
-              </span>
-            ))}
-        </div>
-      </div>
+      )}
 
       <style jsx>{`
         .container:before {
@@ -148,6 +155,7 @@ const Player = ({ result }) => {
           z-index: -1;
 
           display: block;
+          background-color: #aaaaaa;
           background-image: url('${currentSong.thumb}');
           background-size: cover;
           background-position: center;

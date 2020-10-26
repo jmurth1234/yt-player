@@ -25,7 +25,7 @@ const Song = ({ video, replace, onClick }) => {
   }
 
   return (
-    <Link href={`/player?v=${video.id}`} replace={replace}>
+    <Link href={`/player/${video.id}`} replace={replace}>
       {link}
     </Link>
   )
