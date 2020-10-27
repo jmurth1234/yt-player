@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from '../components/head'
 import home from '../styles/home'
-import { row } from '../styles/shared'
 
 const Home = () => (
   <div className="page">
@@ -19,7 +18,6 @@ const Home = () => (
     </div>
 
     <style jsx>{home}</style>
-    <style jsx>{row}</style>
   </div>
 )
 

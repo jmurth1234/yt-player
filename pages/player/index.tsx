@@ -1,16 +1,21 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import Head from '../../components/head'
 import classNames from 'classnames'
 import audioContext from '../../lib/audio-context'
 import dynamic from 'next/dynamic'
 
-import Slider, { Range } from 'rc-slider'
 import Song from '../../components/song'
 import { getYoutube } from '../../lib/youtube-retriever'
 import getAudioUrl from '../../lib/audio-url'
 import styles from './Player.module.scss'
+import Image from 'next/image'
 
 const PlayIcon = dynamic(() => import('../../components/play-icon'))
+const BlurredBackground = dynamic(
+  () => import('../../components/blurred-background')
+)
+const Slider = dynamic(() => import('rc-slider'))
+const Range = dynamic(() => import('rc-slider').then(module => module.Range))
 
 const Player = ({ result }) => {
   const {
@@ -50,12 +55,14 @@ const Player = ({ result }) => {
 
   const setVal = () => {
     setPosition(localPos.pos)
-    setLocalPos({ changing: false })
+    setLocalPos({ changing: false, pos: localPos.pos })
   }
 
   const toggleRelated = () => {
     setRelated(!showingRelated)
   }
+
+  const thumbnail = currentSong.thumb || 'https://placehold.it/640x360'
 
   return (
     <div className={classNames(styles.container, 'container')}>
@@ -64,7 +71,12 @@ const Player = ({ result }) => {
       <div className={classNames(styles.area, styles.playerArea)}>
         <div className={styles.infoArea}>
           <div>
-            <img src={currentSong.thumb} />
+            {!currentSong.thumb && (
+              <Image unsized src="https://placehold.it/640x360" />
+            )}
+            {currentSong.thumb && (
+              <Image unsized src={thumbnail} loading="eager" />
+            )}
           </div>
 
           <div className={styles.hero}>
@@ -148,23 +160,7 @@ const Player = ({ result }) => {
         </div>
       )}
 
-      <style jsx>{`
-        .container:before {
-          content: '';
-          position: fixed;
-          z-index: -1;
-
-          display: block;
-          background-color: #aaaaaa;
-          background-image: url('${currentSong.thumb}');
-          background-size: cover;
-          background-position: center;
-          width: 150%;
-          height: 150%;
-
-          filter: blur(20px);
-        }
-      `}</style>
+      <BlurredBackground hash={currentSong.blurHash} />
     </div>
   )
 }
@@ -185,7 +181,7 @@ export async function getServerSideProps(context) {
   }
 
   const url = `https://youtube.com/watch?v=${id}`
-  const result = await getYoutube(url)
+  const result = await getYoutube(url, false)
 
   return { props: { result } }
 }

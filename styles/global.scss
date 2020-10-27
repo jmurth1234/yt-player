@@ -53,3 +53,17 @@ body,
     margin: 40px auto 20px;
   }
 }
+
+
+.fixedBar {
+  position: fixed;
+  width: 100%;
+}
+
+.top {
+  top: 0;
+}
+
+.bottom {
+  bottom: 0;
+}

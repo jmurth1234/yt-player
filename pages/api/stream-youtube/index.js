@@ -12,6 +12,7 @@ export default async (req, res) => {
     ffmpeg(youtube)
       .noVideo()
       .format('mp3')
+      .audioBitrate('128')
       .on('end', () => {
         console.log('Successfully converted file')
       })

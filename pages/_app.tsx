@@ -11,7 +11,8 @@ import { AppProps } from 'next/app'
 class YTApp extends React.Component<AppProps> {
   state = {
     nowPlaying: {
-      url: ""
+      url: "",
+      id: null
     },
     playing: false,
     volume: 1,

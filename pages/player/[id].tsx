@@ -24,7 +24,7 @@ export async function getStaticProps(context) {
   }
 
   const url = `https://youtube.com/watch?v=${id}`
-  const result = await getYoutube(url)
+  const result = await getYoutube(url, false)
 
   return { props: { result }, revalidate: 600 }
 }

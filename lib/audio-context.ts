@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default React.createContext({
-  nowPlaying: {},
+  nowPlaying: { url: '', id: null },
   isPlaying: false,
   volume: 1,
   currentTime: 0,

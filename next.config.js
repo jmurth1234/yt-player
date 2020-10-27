@@ -19,5 +19,8 @@ module.exports = composePlugins([withBundleAnalyzer], {
       })
     )
     return config
+  },
+  images: {
+    domains: ['placehold.it', 'ytimg.com', 'i.ytimg.com'],
   }
 })
