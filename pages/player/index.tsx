@@ -72,10 +72,10 @@ const Player = ({ result }) => {
         <div className={styles.infoArea}>
           <div className={styles.thumb}>
             {!currentSong.thumb && (
-              <Image width={1280} height={720} src="https://placehold.it/1280x720" />
+              <Image width={500} height={280} src="https://placehold.it/1280x720" />
             )}
             {currentSong.thumb && (
-              <Image width={1280} height={720} src={thumbnail} loading="eager" />
+              <Image width={500} height={280} src={thumbnail} loading="eager" />
             )}
           </div>
 
