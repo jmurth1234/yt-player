@@ -12,7 +12,10 @@ import Image from 'next/image'
 
 const PlayIcon = dynamic(() => import('../../components/play-icon'))
 const BlurredBackground = dynamic(
-  () => import('../../components/blurred-background')
+  () => import('../../components/blurhash').then(c => c.BlurredBackground)
+)
+const HashImage = dynamic(
+  () => import('../../components/blurhash').then(c => c.HashImage)
 )
 const Slider = dynamic(() => import('rc-slider'))
 const Range = dynamic(() => import('rc-slider').then(module => module.Range))
@@ -71,16 +74,11 @@ const Player = ({ result }) => {
       <div className={classNames(styles.area, styles.playerArea)}>
         <div className={styles.infoArea}>
           <div className={styles.thumb}>
-            {!currentSong.thumb && (
-              <Image width={500} height={280} src="https://placehold.it/1280x720" />
-            )}
-            {currentSong.thumb && (
-              <Image width={500} height={280} src={thumbnail} loading="eager" />
-            )}
+            <HashImage width={500} height={280} src={thumbnail} hash={currentSong.blurHash} />
           </div>
 
           <div className={styles.hero}>
-            <h3>{currentSong.title}</h3>
+            <h3>{currentSong.title || 'Loading...'}</h3>
             <a href={currentSong.channelUrl}>
               <p>{currentSong.channelName}</p>
             </a>
