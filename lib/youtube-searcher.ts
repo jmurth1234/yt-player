@@ -1,16 +1,17 @@
 import search from 'yt-search'
+import { encodeImageToBlurhash } from './encode-image'
 
 export async function searchYoutube(query: string) {
   let youtube = await search(query)
-  const items = youtube.videos
-    .map((video) => ({
-      id: video.videoId,
-      thumb: video.thumbnail,
-      title: video.title,
-      channelName: video.author.name,
-    }))
+  const items = youtube.videos.map(async (video) => ({
+    id: video.videoId,
+    thumb: video.thumbnail,
+    title: video.title,
+    channelName: video.author.name,
+    blurHash: await encodeImageToBlurhash(video.thumbnail),
+  }))
 
-  return items
+  return Promise.all(items)
 }
 
 export async function getFromRequest(req, res) {

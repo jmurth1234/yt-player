@@ -1,22 +1,23 @@
 import ytdl from 'ytdl-core'
-import { encode } from 'blurhash'
-import sharp from 'sharp'
+import { Readable } from 'stream'
+import { encodeImageToBlurhash } from './encode-image'
 
-const encodeImageToBlurhash = (url) =>
-  new Promise(async (resolve, reject) => {
-    const image: any = await fetch(url)
-    const buffer = await image.buffer()
-    sharp(buffer)
-      .raw()
-      .ensureAlpha()
-      .resize(128, 72, { fit: 'inside' })
-      .toBuffer((err, buffer, { width, height }) => {
-        if (err) return reject(err)
-        resolve(encode(new Uint8ClampedArray(buffer), width, height, 8, 5))
-      })
-  })
+export interface Video {
+  id: string
+  title: string
+  channelName: string
+  thumb: string
+  blurHash: string
+  url?: string
+  channelUrl?: string
+  length?: number
+  related?: Video[]
+}
 
-export const getYoutube = async (url, stream) => {
+export const getYoutube = async (
+  url: string,
+  stream: boolean
+): Promise<Video | Readable> => {
   if (!url) {
     throw new Error('URL is required')
   }
@@ -37,7 +38,25 @@ export const getYoutube = async (url, stream) => {
 
     const blurHash = await encodeImageToBlurhash(largeThumb.url)
 
-    const infoObj = {
+    const related = await Promise.all(
+      videoInfo.related_videos
+        .filter((video) => !!video.title && !!video.id)
+        .map(
+          async (video: Related): Promise<Video> => {
+            const blurHash = await encodeImageToBlurhash(video.video_thumbnail)
+
+            return {
+              title: video.title,
+              thumb: video.video_thumbnail,
+              channelName: video.author,
+              id: video.id,
+              blurHash,
+            }
+          }
+        )
+    )
+
+    const infoObj: Video = {
       title: info.title.trim(),
       channelName: info.author.name,
       channelUrl: info.author.channel_url,
@@ -45,14 +64,7 @@ export const getYoutube = async (url, stream) => {
       blurHash,
       id: info.videoId,
       length: Number.parseInt(info.lengthSeconds),
-      related: videoInfo.related_videos
-        .filter((video) => !!video.title && !!video.id)
-        .map((video: Related) => ({
-          title: video.title,
-          thumb: video.video_thumbnail,
-          channelName: video.author,
-          id: video.id,
-        })),
+      related,
     }
 
     return infoObj
@@ -61,7 +73,7 @@ export const getYoutube = async (url, stream) => {
 
 export const getFromRequest = async (req, res, stream) => {
   const url = req.body.url || `https://youtube.com/watch?v=${req.query.id}`
-  let youtube
+  let youtube: Video | Readable = null
   try {
     youtube = await getYoutube(url, stream)
   } catch (e) {

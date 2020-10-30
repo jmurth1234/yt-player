@@ -1,13 +1,13 @@
 import React from 'react'
 import Head from '../components/head'
-import home from '../styles/home'
+import styles from '../styles/Page.module.scss'
 
 const Home = () => (
-  <div className="page">
+  <div className={styles.page}>
     <Head title="About" />
 
-    <div className="hero">
-      <h1 className="title">About YT Player</h1>
+    <div className={styles.hero}>
+      <h1 className={styles.title}>About YT Player</h1>
     </div>
 
     <div className="row">
@@ -16,8 +16,6 @@ const Home = () => (
         based songs as audio, saving you bandwidth
       </p>
     </div>
-
-    <style jsx>{home}</style>
   </div>
 )
 

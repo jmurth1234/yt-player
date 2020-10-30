@@ -6,12 +6,19 @@ import classNames from 'classnames'
 
 const links = [
   { href: '/about', label: 'About' },
-  { href: 'https://github.com/rymate1234/yt-player', label: 'GitHub' }
+  { href: 'https://github.com/rymate1234/yt-player', label: 'GitHub' },
 ]
 
 const Nav = ({ hidden }) => {
   return (
-    <nav className={classNames(styles.nav, { [styles.player]: hidden })}>
+    <nav
+      className={classNames(
+        styles.nav,
+        { [styles.player]: hidden },
+        'fixedBar',
+        'top'
+      )}
+    >
       <ul className={styles.left}>
         <li>
           <Link href="/">
@@ -45,5 +52,3 @@ const Nav = ({ hidden }) => {
 }
 
 export default Nav
-
-

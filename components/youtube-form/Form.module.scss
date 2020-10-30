@@ -32,6 +32,7 @@
 }
 
 .container {
+  margin-bottom: 77px;
   button {
     flex: 0 0 auto;
     border: 0;
@@ -40,4 +41,11 @@
   }
 }
 
+.songContainer {
+  width: 100%;
+}
 
+.songContainer:hover {
+  width: 100%;
+  background-color: rgba(220, 220, 220);
+}

@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react'
-import audioContext from '../../lib/audio-context'
+import { AudioContext } from '../../lib/audio-context'
 import styles from './Player.module.scss'
 import classNames from 'classnames'
 import Song from '../song'
@@ -8,26 +8,27 @@ import dynamic from 'next/dynamic'
 const PlayIcon = dynamic(() => import('../play-icon'))
 
 function AudioPlayer({ hidden }) {
-  const { nowPlaying, isPlaying, togglePlaying } = useContext(audioContext)
+  const { nowPlaying, isPlaying, togglePlaying } = useContext(AudioContext)
 
-  const offscreen = hidden || !nowPlaying.url
+  const offscreen = hidden || !nowPlaying || !nowPlaying.url
+
+  if (offscreen) return null
 
   return (
-    <Fragment>
-      <div
-        className={classNames(styles.player, { [styles.offscreen]: offscreen }, 'fixedBar', 'botton')}
-      >
-        {!hidden && (
-          <>
-            <Song video={nowPlaying} />
+    <div
+      className={classNames(
+        styles.player,
+        { [styles.offscreen]: offscreen },
+        'fixedBar',
+        'botton'
+      )}
+    >
+      <Song video={nowPlaying} />
 
-            <button onClick={togglePlaying}>
-              <PlayIcon isPlaying={isPlaying} />
-            </button>
-          </>
-        )}
-      </div>
-    </Fragment>
+      <button onClick={togglePlaying}>
+        <PlayIcon isPlaying={isPlaying} />
+      </button>
+    </div>
   )
 }
 

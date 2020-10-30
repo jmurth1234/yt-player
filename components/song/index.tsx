@@ -1,11 +1,16 @@
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
 import styles from './Song.module.scss'
+import { Video } from '../../lib/youtube-retriever'
+
+const HashImage = dynamic(() =>
+  import('../../components/blurhash').then((c) => c.HashImage)
+)
 
 interface Props {
-  video: any
+  video: Video
   replace?: boolean
   onClick?: (event: any) => void
 }
@@ -15,7 +20,7 @@ const Song = ({ video, replace, onClick }: Props) => {
     <a className={styles.song}>
       <div className={styles.inner}>
         {video.thumb && (
-          <Image height={72} width={128} src={video.thumb} loading="eager" />
+          <HashImage height={72} width={128} src={video.thumb} hash={video.blurHash} />
         )}
       </div>
       <div className={styles.cardInfo}>

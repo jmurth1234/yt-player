@@ -50,8 +50,8 @@ export const HashImage: React.FC<Props> = ({ hash, src, width, height }) => (
         background-position: center;
         height: 100vh;
         width: 100vh;
-        max-height: ${width}px;
-        max-width: ${height}px;
+        max-width: ${width}px;
+        max-height: ${height}px;
       }
     `}</style>
   </div>

@@ -2,9 +2,10 @@ import React, { Fragment, useContext, useMemo, useState } from 'react'
 import styles from './Form.module.scss'
 
 import useNetwork from '../../lib/use-network'
-import audioContext from '../../lib/audio-context'
+import { AudioContext } from '../../lib/audio-context'
 import getAudioUrl from '../../lib/audio-url'
 import Song from '../song'
+import { Video } from '../../lib/youtube-retriever'
 
 function Field({ id, label, children, ...props }) {
   return (
@@ -27,7 +28,7 @@ function YouTubeForm() {
 
   const url = getAudioUrl(urlApi.data)
 
-  const audio = useContext(audioContext)
+  const audio = useContext(AudioContext)
   const [youtubeRequest, setRequest] = useState<String>()
 
   useMemo(() => {
@@ -76,8 +77,8 @@ function YouTubeForm() {
 
       {searchApi.data && searchApi.data.length && (
         <div className="row">
-          {searchApi.data.map((video, i) => (
-            <span className="songContainer" key={i}>
+          {searchApi.data.map((video: Video) => (
+            <span className={styles.songContainer} key={video.id}>
               <Song
                 video={video}
                 replace={false}

@@ -1,11 +1,10 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: !!process.env.ANALYZE
+  enabled: !!process.env.ANALYZE,
 })
 
 const composePlugins = require('next-compose-plugins')
 
 module.exports = composePlugins([withBundleAnalyzer], {
-  experimental: { modern: true },
   webpack: (config, { webpack }) => {
     // Note: we provide webpack above so you should not `require` it
     // Perform customizations to webpack config
@@ -15,12 +14,12 @@ module.exports = composePlugins([withBundleAnalyzer], {
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.FLUENTFFMPEG_COV': false,
-        'process.env.IS_NOW': process.env.IS_NOW
+        'process.env.IS_NOW': process.env.IS_NOW,
       })
     )
     return config
   },
   images: {
     domains: ['placehold.it', 'ytimg.com', 'i.ytimg.com'],
-  }
+  },
 })

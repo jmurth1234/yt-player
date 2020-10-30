@@ -1,24 +1,23 @@
 import React, { useContext, useMemo, useState } from 'react'
 import Head from '../../components/head'
 import classNames from 'classnames'
-import audioContext from '../../lib/audio-context'
+import { AudioContext } from '../../lib/audio-context'
 import dynamic from 'next/dynamic'
 
 import Song from '../../components/song'
 import { getYoutube } from '../../lib/youtube-retriever'
 import getAudioUrl from '../../lib/audio-url'
 import styles from './Player.module.scss'
-import Image from 'next/image'
 
 const PlayIcon = dynamic(() => import('../../components/play-icon'))
-const BlurredBackground = dynamic(
-  () => import('../../components/blurhash').then(c => c.BlurredBackground)
+const BlurredBackground = dynamic(() =>
+  import('../../components/blurhash').then((c) => c.BlurredBackground)
 )
-const HashImage = dynamic(
-  () => import('../../components/blurhash').then(c => c.HashImage)
+const HashImage = dynamic(() =>
+  import('../../components/blurhash').then((c) => c.HashImage)
 )
 const Slider = dynamic(() => import('rc-slider'))
-const Range = dynamic(() => import('rc-slider').then(module => module.Range))
+const Range = dynamic(() => import('rc-slider').then((module) => module.Range))
 
 const Player = ({ result }) => {
   const {
@@ -31,7 +30,7 @@ const Player = ({ result }) => {
     currentBuffered,
     setPosition,
     setVolume,
-  } = useContext(audioContext)
+  } = useContext(AudioContext)
 
   const currentSong = { ...nowPlaying, ...result }
 
@@ -41,7 +40,7 @@ const Player = ({ result }) => {
   const [showingRelated, setRelated] = useState(false)
 
   useMemo(() => {
-    if (!url || nowPlaying.id === result.id) {
+    if (!url || (nowPlaying && nowPlaying.id === result.id)) {
       return
     }
 
@@ -50,7 +49,7 @@ const Player = ({ result }) => {
       url,
     })
     setLocalPos({ pos: 0, changing: false })
-  }, [url])
+  }, [url, nowPlaying, result])
 
   const changeVal = (pos) => {
     setLocalPos({ pos: pos[1], changing: true })
@@ -74,7 +73,12 @@ const Player = ({ result }) => {
       <div className={classNames(styles.area, styles.playerArea)}>
         <div className={styles.infoArea}>
           <div className={styles.thumb}>
-            <HashImage width={500} height={280} src={thumbnail} hash={currentSong.blurHash} />
+            <HashImage
+              width={500}
+              height={280}
+              src={thumbnail}
+              hash={currentSong.blurHash}
+            />
           </div>
 
           <div className={styles.hero}>
@@ -150,9 +154,9 @@ const Player = ({ result }) => {
           <div className={styles.relatedBody}>
             {currentSong.related &&
               currentSong.related.map((video, i) => (
-                <span className={styles.songContainer} key={i}>
+                <div className={styles.songContainer} key={i}>
                   <Song video={video} replace />
-                </span>
+                </div>
               ))}
           </div>
         </div>
