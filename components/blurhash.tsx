@@ -8,9 +8,7 @@ import { encode as encode64 } from 'base64-arraybuffer'
 
 const hashToImage = (hash) => {
   if (!hash) return ''
-  console.time('hash')
   const pixels = decodeBlurhash(hash, 16, 10)
-  console.timeLog('hash', 'decode hash')
 
   let img = ''
 
@@ -31,10 +29,6 @@ const hashToImage = (hash) => {
     img = 'data:image/png;base64,' + encode64(png)
   }
 
-  console.timeLog('hash', 'into image')
-
-  console.timeEnd('hash')
-
   return img
 }
 
@@ -46,7 +40,7 @@ interface Props {
 }
 
 export const BlurredBackground: React.FC<Props> = memo(({ hash }) => (
-  <style jsx global>{`
+  <style jsx>{`
     body:before {
       content: '';
       position: fixed;
@@ -65,7 +59,7 @@ export const BlurredBackground: React.FC<Props> = memo(({ hash }) => (
 
 export const HashImage: React.FC<Props> = memo(({ hash, src, width, height }) => (
   <div>
-    <Image width={width} height={height} src={src} loading="eager" />
+    <Image width={width} height={height} src={src} />
     <style jsx>{`
       div {
         background-image: url('${hashToImage(hash)}');

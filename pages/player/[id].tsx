@@ -5,7 +5,7 @@ import { AudioContext } from '../../lib/audio-context'
 import dynamic from 'next/dynamic'
 
 import Song from '../../components/song'
-import { getYoutube } from '../../lib/youtube-retriever'
+import { getYoutube, Video } from '../../lib/youtube-retriever'
 import getAudioUrl from '../../lib/audio-url'
 import styles from './Player.module.scss'
 
@@ -32,7 +32,7 @@ const Player = ({ result }) => {
     setVolume,
   } = useContext(AudioContext)
 
-  const currentSong = { ...nowPlaying, ...result }
+  const currentSong: Video = { ...nowPlaying, ...result }
 
   const url = getAudioUrl(result)
 
@@ -142,8 +142,8 @@ const Player = ({ result }) => {
           </div>
           <div className={styles.relatedBody}>
             {currentSong.related &&
-              currentSong.related.map((video, i) => (
-                <div className={styles.songContainer} key={i}>
+              currentSong.related.map((video) => (
+                <div className={styles.songContainer} key={video.id}>
                   <Song video={video} replace />
                 </div>
               ))}
