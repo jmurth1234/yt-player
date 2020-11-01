@@ -1,5 +1,5 @@
 import search from 'yt-search'
-import { encodeImageToBlurhash } from './encode-image'
+import { encodeImageToBlurHash } from './encode-image'
 
 export async function searchYoutube(query: string) {
   let youtube = await search(query)
@@ -8,7 +8,7 @@ export async function searchYoutube(query: string) {
     thumb: video.thumbnail,
     title: video.title,
     channelName: video.author.name,
-    blurHash: await encodeImageToBlurhash(video.thumbnail),
+    blurHash: await encodeImageToBlurHash(video.thumbnail),
   }))
 
   return Promise.all(items)

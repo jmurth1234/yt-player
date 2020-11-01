@@ -1,6 +1,6 @@
 import ytdl from 'ytdl-core'
 import { Readable } from 'stream'
-import { encodeImageToBlurhash } from './encode-image'
+import { encodeImageToBlurHash } from './encode-image'
 
 export interface Video {
   id: string
@@ -36,14 +36,14 @@ export const getYoutube = async (
 
     const info = videoInfo.videoDetails
 
-    const blurHash = await encodeImageToBlurhash(largeThumb.url)
+    const blurHash = await encodeImageToBlurHash(largeThumb.url)
 
     const related = await Promise.all(
       videoInfo.related_videos
         .filter((video) => !!video.title && !!video.id)
         .map(
           async (video: Related): Promise<Video> => {
-            const blurHash = await encodeImageToBlurhash(video.video_thumbnail)
+            const blurHash = await encodeImageToBlurHash(video.video_thumbnail)
 
             return {
               title: video.title,

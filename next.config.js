@@ -2,9 +2,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: !!process.env.ANALYZE,
 })
 
+const withPreact = require('next-plugin-preact')
 const composePlugins = require('next-compose-plugins')
 
-module.exports = composePlugins([withBundleAnalyzer], {
+module.exports = composePlugins([withBundleAnalyzer, withPreact], {
   webpack: (config, { webpack }) => {
     // Note: we provide webpack above so you should not `require` it
     // Perform customizations to webpack config
