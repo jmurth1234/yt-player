@@ -21,6 +21,7 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 RUN chown -R nextjs /opt/app/.next/server/
+RUN chown -R nextjs /opt/app/.next/cache/
 
 USER nextjs
 
