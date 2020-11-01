@@ -22,5 +22,6 @@ module.exports = composePlugins([withBundleAnalyzer, withPreact], {
   },
   images: {
     domains: ['placehold.it', 'ytimg.com', 'i.ytimg.com'],
+    imageSizes: [500, 128],
   },
 })
