@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import Image from 'next/image'
 
@@ -8,11 +8,34 @@ import { encode as encode64 } from 'base64-arraybuffer'
 
 const hashToImage = (hash) => {
   if (!hash) return ''
+  console.time('hash')
   const pixels = decodeBlurhash(hash, 16, 10)
-  const png = encodePNG([pixels], 16, 10, 256)
-  const imageSrc = 'data:image/png;base64,' + encode64(png)
+  console.timeLog('hash', 'decode hash')
 
-  return imageSrc
+  let img = ''
+
+  if (process.browser) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 16
+    canvas.height = 10
+
+    const ctx = canvas.getContext("2d");
+
+    const imageData = ctx.createImageData(16, 10);
+    imageData.data.set(pixels);
+    ctx.putImageData(imageData, 0, 0);
+
+    img = canvas.toDataURL()
+  } else {
+    const png = encodePNG([pixels], 16, 10, 256)
+    img = 'data:image/png;base64,' + encode64(png)
+  }
+
+  console.timeLog('hash', 'into image')
+
+  console.timeEnd('hash')
+
+  return img
 }
 
 interface Props {
@@ -22,7 +45,7 @@ interface Props {
   width?: number
 }
 
-export const BlurredBackground: React.FC<Props> = ({ hash }) => (
+export const BlurredBackground: React.FC<Props> = memo(({ hash }) => (
   <style jsx global>{`
     body:before {
       content: '';
@@ -38,9 +61,9 @@ export const BlurredBackground: React.FC<Props> = ({ hash }) => (
       width: 100%;
     }
   `}</style>
-)
+))
 
-export const HashImage: React.FC<Props> = ({ hash, src, width, height }) => (
+export const HashImage: React.FC<Props> = memo(({ hash, src, width, height }) => (
   <div>
     <Image width={width} height={height} src={src} loading="eager" />
     <style jsx>{`
@@ -55,4 +78,4 @@ export const HashImage: React.FC<Props> = ({ hash, src, width, height }) => (
       }
     `}</style>
   </div>
-)
+))
