@@ -51,6 +51,8 @@ const Player = ({ result }) => {
   }, [url, nowPlaying, result])
 
   const changeVal = (pos) => {
+    if (pos[1] === currentTime) return
+
     setPosition(pos[1])
   }
 
