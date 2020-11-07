@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 
 import Image from 'next/image'
 
@@ -13,15 +13,15 @@ const hashToImage = (hash) => {
   let img = ''
 
   if (process.browser) {
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas')
     canvas.width = 16
     canvas.height = 10
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d')
 
-    const imageData = ctx.createImageData(16, 10);
-    imageData.data.set(pixels);
-    ctx.putImageData(imageData, 0, 0);
+    const imageData = ctx.createImageData(16, 10)
+    imageData.data.set(pixels)
+    ctx.putImageData(imageData, 0, 0)
 
     img = canvas.toDataURL()
   } else {
@@ -37,9 +37,10 @@ interface Props {
   src?: string
   height?: number
   width?: number
+  eager?: boolean
 }
 
-export const BlurredBackground: React.FC<Props> = memo(({ hash }) => (
+export const BlurredBackground: React.FC<Props> = ({ hash }) => (
   <style jsx>{`
     body:before {
       content: '';
@@ -55,21 +56,34 @@ export const BlurredBackground: React.FC<Props> = memo(({ hash }) => (
       width: 100%;
     }
   `}</style>
-))
+)
 
-export const HashImage: React.FC<Props> = memo(({ hash, src, width, height }) => (
+export const HashImage: React.FC<Props> = ({
+  hash,
+  src,
+  width,
+  height,
+  eager,
+}) => (
   <div>
-    <Image width={width} height={height} src={src} />
+    <Image
+      width={width}
+      height={height}
+      src={src}
+      loading={eager ? 'eager' : 'lazy'}
+    />
     <style jsx>{`
       div {
+        display: flex;
         background-image: url('${hashToImage(hash)}');
         background-size: cover;
         background-position: center;
-        height: 100vh;
-        width: 100vh;
+        width: 100vw;
         max-width: ${width}px;
         max-height: ${height}px;
+        align-items: center;
+        justify-content: center;      
       }
     `}</style>
   </div>
-))
+)

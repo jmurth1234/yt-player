@@ -84,7 +84,7 @@ export default class YTAudioContextWrapper extends React.Component {
             onPause={() => this.setPlaying(false)}
             onVolumeChange={() => this.setVolume()}
             onTimeUpdate={() => this.setCurrentTime()}
-            preload="auto"
+            preload="all"
           >
             Your browser does not support the audio tag.
           </audio>

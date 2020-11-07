@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState, memo } from 'react'
 import Head from '../../components/head'
 import classNames from 'classnames'
 import { AudioContext } from '../../lib/audio-context'
@@ -10,12 +10,15 @@ import getAudioUrl from '../../lib/audio-url'
 import styles from './Player.module.scss'
 
 const PlayIcon = dynamic(() => import('../../components/play-icon'))
-const BlurredBackground = dynamic(() =>
+
+const BlurredBackground = memo(dynamic(() =>
   import('../../components/blurhash').then((c) => c.BlurredBackground)
-)
-const HashImage = dynamic(() =>
+))
+
+const HashImage = memo(dynamic(() =>
   import('../../components/blurhash').then((c) => c.HashImage)
-)
+))
+
 const Slider = dynamic(() => import('rc-slider'))
 const Range = dynamic(() => import('rc-slider').then((module) => module.Range))
 
@@ -74,6 +77,7 @@ const Player = ({ result }) => {
               height={280}
               src={thumbnail}
               hash={currentSong.blurHash}
+              eager
             />
           </div>
 

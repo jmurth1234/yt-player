@@ -21,6 +21,8 @@
   }
 
   .infoArea {
+    max-width: 500px;
+
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.2);
@@ -30,10 +32,12 @@
   .hero {
     padding: 10px;
     color: #333;
+    word-wrap: break-word;
 
     h3,
     a {
       text-align: center;
+      word-wrap: break-word;
       width: 100%;
     }
   }

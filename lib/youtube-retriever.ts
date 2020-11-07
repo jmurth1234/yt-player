@@ -1,6 +1,10 @@
 import ytdl from 'ytdl-core'
-import { Readable } from 'stream'
+import { Readable, PassThrough } from 'stream'
+
 import { encodeImageToBlurHash } from './encode-image'
+import ffmpeg, { setFfmpegPath } from 'fluent-ffmpeg'
+import path from 'ffmpeg-static'
+setFfmpegPath(path)
 
 export interface Video {
   id: string
@@ -78,6 +82,23 @@ export const getFromRequest = async (req, res, stream) => {
     youtube = await getYoutube(url, stream)
   } catch (e) {
     res.status('404').send({ error: `Could not stream: ${e}` })
+  }
+
+  if (stream) {
+    const stream = new PassThrough()
+    const ff = ffmpeg(youtube)
+      .noVideo()
+      .format('opus')
+      .audioBitrate('128')
+      .on('end', () => {
+        console.log('Successfully converted file')
+      })
+      .on('error', (err) => {
+        console.log(err)
+      })
+      .pipe(stream)
+
+    return stream
   }
 
   return youtube
