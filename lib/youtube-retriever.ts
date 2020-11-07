@@ -86,9 +86,9 @@ export const getFromRequest = async (req, res, stream) => {
 
   if (stream) {
     const stream = new PassThrough()
-    ffmpeg(youtube)
+    const ff = ffmpeg(youtube)
       .noVideo()
-      .format('mp3')
+      .format('opus')
       .audioBitrate('128')
       .on('end', () => {
         console.log('Successfully converted file')

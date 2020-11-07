@@ -13,21 +13,14 @@ interface Props {
   video: Video
   replace?: boolean
   onClick?: (event: any) => void
-  eager?: boolean
 }
 
-const Song = ({ video, replace, onClick, eager }: Props) => {
+const Song = ({ video, replace, onClick }: Props) => {
   const link = (
     <a className={styles.song}>
       <div className={styles.inner}>
         {video.thumb && (
-          <HashImage
-            height={72}
-            width={128}
-            src={video.thumb}
-            hash={video.blurHash}
-            eager={eager}
-          />
+          <HashImage height={72} width={128} src={video.thumb} hash={video.blurHash} />
         )}
       </div>
       <div className={styles.cardInfo}>

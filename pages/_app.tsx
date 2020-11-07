@@ -19,6 +19,8 @@ const YTApp: React.FC<AppProps> = (props) => {
         <Component {...pageProps} key={router.route} />
       </div>
       <Player hidden={hidden} />
+
+      <style jsx global>{``}</style>
     </YTAudioContextWrapper>
   )
 }
