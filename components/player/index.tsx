@@ -23,7 +23,7 @@ function AudioPlayer({ hidden }) {
         'botton'
       )}
     >
-      <Song video={nowPlaying} />
+      <Song video={nowPlaying} eager />
 
       <button onClick={togglePlaying}>
         <PlayIcon isPlaying={isPlaying} />
