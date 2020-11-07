@@ -5,6 +5,7 @@ export default async (req, res) => {
 
   if (!youtube) return
   res.setHeader('Cache-Control', 's-maxage=0, stale-while-revalidate')
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader('Content-Disposition', 'attachment')
 
   try {
