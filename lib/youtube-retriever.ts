@@ -1,10 +1,10 @@
 import ytdl from 'ytdl-core'
+import youtubeDl from 'youtube-dl'
 import { Readable, PassThrough } from 'stream'
 
 import { encodeImageToBlurHash } from './encode-image'
 import ffmpeg, { setFfmpegPath } from 'fluent-ffmpeg'
 import path from 'ffmpeg-static'
-import delay from 'delay-stream'
 
 setFfmpegPath(path)
 
@@ -32,14 +32,17 @@ export const getYoutube = async (
     video_thumbnail?: string
   }
 
+  const videoInfo = await ytdl.getInfo(url)
+
   if (stream) {
-    const youtube = ytdl(url, {
-      quality: 'highestaudio',
-      highWaterMark: 1 << 25,
-    })
-    return youtube
+    if (videoInfo.videoDetails.isLiveContent) {
+      return ytdl(url, {
+        liveBuffer: 25000,
+      })
+    } else {
+      return youtubeDl(url)
+    }
   } else {
-    const videoInfo = await ytdl.getInfo(url)
     const playerResponse = videoInfo.player_response
     const largeThumb = playerResponse.videoDetails.thumbnail.thumbnails.pop()
 
@@ -92,8 +95,8 @@ export const getFromRequest = async (req, res, stream) => {
   if (stream) {
     const input = youtube as Readable
     const stream = new PassThrough()
-    const ff = ffmpeg()
-      .noVideo()
+    const ff = ffmpeg(input)
+      .native()
       .format('mp3')
       .audioBitrate('128')
       .on('end', () => {
@@ -103,9 +106,7 @@ export const getFromRequest = async (req, res, stream) => {
         console.log(err)
       })
 
-    ff.input(input)
-
-    ff.pipe(delay(5000)).pipe(stream)
+    ff.pipe(stream)
 
     return stream
   }
