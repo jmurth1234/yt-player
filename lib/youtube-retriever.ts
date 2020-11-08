@@ -4,6 +4,8 @@ import { Readable, PassThrough } from 'stream'
 import { encodeImageToBlurHash } from './encode-image'
 import ffmpeg, { setFfmpegPath } from 'fluent-ffmpeg'
 import path from 'ffmpeg-static'
+import delay from 'delay-stream'
+
 setFfmpegPath(path)
 
 export interface Video {
@@ -85,10 +87,11 @@ export const getFromRequest = async (req, res, stream) => {
   }
 
   if (stream) {
+    const input = youtube as Readable
     const stream = new PassThrough()
-    const ff = ffmpeg(youtube)
+    const ff = ffmpeg()
       .noVideo()
-      .format('opus')
+      .format('mp3')
       .audioBitrate('128')
       .on('end', () => {
         console.log('Successfully converted file')
@@ -96,7 +99,10 @@ export const getFromRequest = async (req, res, stream) => {
       .on('error', (err) => {
         console.log(err)
       })
-      .pipe(stream)
+
+    ff.input(input)
+
+    ff.pipe(delay(5000)).pipe(stream)
 
     return stream
   }
