@@ -33,7 +33,10 @@ export const getYoutube = async (
   }
 
   if (stream) {
-    const youtube = ytdl(url, { quality: 'highestaudio' })
+    const youtube = ytdl(url, {
+      quality: 'highestaudio',
+      highWaterMark: 1 << 25,
+    })
     return youtube
   } else {
     const videoInfo = await ytdl.getInfo(url)
