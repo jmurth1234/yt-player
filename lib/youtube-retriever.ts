@@ -35,13 +35,11 @@ export const getYoutube = async (
   const videoInfo = await ytdl.getInfo(url)
 
   if (stream) {
-    if (videoInfo.videoDetails.isLiveContent) {
-      return ytdl(url, {
-        liveBuffer: 25000,
-      })
-    } else {
-      return youtubeDl(url)
-    }
+    return ytdl(url, {
+      liveBuffer: 25000,
+      highWaterMark: 1024 * 1024 * 100 
+      //highWaterMark: 1 << 25,
+    })
   } else {
     const playerResponse = videoInfo.player_response
     const largeThumb = playerResponse.videoDetails.thumbnail.thumbnails.pop()

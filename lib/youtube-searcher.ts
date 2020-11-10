@@ -1,15 +1,23 @@
-import search from 'yt-search'
+import search, { VideoSearchResult, LiveSearchResult } from 'yt-search'
 import { encodeImageToBlurHash } from './encode-image'
 
 export async function searchYoutube(query: string) {
   let youtube = await search(query)
-  const items = youtube.videos.map(async (video) => ({
-    id: video.videoId,
-    thumb: video.thumbnail,
-    title: video.title,
-    channelName: video.author.name,
-    blurHash: await encodeImageToBlurHash(video.thumbnail),
-  }))
+  const items = youtube.all
+    .filter(
+      (video: VideoSearchResult | LiveSearchResult) =>
+        video.videoId &&
+        video.author &&
+        ((video.type === 'live' && video.status === 'LIVE') ||
+          video.type === 'video')
+    )
+    .map(async (video: VideoSearchResult | LiveSearchResult) => ({
+      id: video.videoId,
+      thumb: video.thumbnail,
+      title: video.title,
+      channelName: video.author.name,
+      blurHash: await encodeImageToBlurHash(video.thumbnail),
+    }))
 
   return Promise.all(items)
 }
