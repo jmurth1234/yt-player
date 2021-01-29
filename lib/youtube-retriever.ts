@@ -1,5 +1,5 @@
-import ytdl from 'ytdl-core'
-import youtubeDl from 'youtube-dl'
+import ytdl, { Author } from 'ytdl-core'
+
 import { Readable, PassThrough } from 'stream'
 
 import { encodeImageToBlurHash } from './encode-image'
@@ -58,7 +58,7 @@ export const getYoutube = async (
             return {
               title: video.title,
               thumb: video.video_thumbnail,
-              channelName: video.author.toString(),
+              channelName: (video.author as Author).name,
               id: video.id,
               blurHash,
             }
