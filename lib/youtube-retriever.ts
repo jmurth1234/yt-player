@@ -58,7 +58,7 @@ export const getYoutube = async (
             return {
               title: video.title,
               thumb: video.video_thumbnail,
-              channelName: video.author,
+              channelName: video.author.toString(),
               id: video.id,
               blurHash,
             }
