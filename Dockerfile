@@ -2,6 +2,10 @@ FROM node:alpine
 
 RUN mkdir -p /opt/app
 RUN apk add --no-cache libc6-compat
+
+# Install yarn and other dependencies via apk
+RUN apk update && apk add python g++ make && rm -rf /var/cache/apk/*
+
 ENV PORT 3000
 EXPOSE 3000
 
