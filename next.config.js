@@ -2,10 +2,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: !!process.env.ANALYZE,
 })
 
-const withPreact = require('next-plugin-preact')
 const composePlugins = require('next-compose-plugins')
 
-module.exports = composePlugins([withBundleAnalyzer, withPreact], {
+module.exports = composePlugins([withBundleAnalyzer], {
   webpack: (config, { webpack }) => {
     // Note: we provide webpack above so you should not `require` it
     // Perform customizations to webpack config
@@ -21,6 +20,9 @@ module.exports = composePlugins([withBundleAnalyzer, withPreact], {
     return config
   },
   images: {
-    domains: ['placehold.it', 'ytimg.com', 'i.ytimg.com']
+    domains: ['placeholder.com', 'ytimg.com', 'i.ytimg.com']
+  },
+  future: {
+    webpack5: true,
   },
 })
