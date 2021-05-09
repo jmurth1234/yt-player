@@ -38,9 +38,10 @@ interface Props {
   height?: number
   width?: number
   eager?: boolean
+  waveOnly?: boolean
 }
 
-export const BlurredBackground: React.FC<Props> = ({ hash }) => (
+export const BlurredBackground: React.FC<Props> = ({ hash, waveOnly }) => (
   <style jsx>{`
     body:before {
       content: '';
@@ -52,6 +53,7 @@ export const BlurredBackground: React.FC<Props> = ({ hash }) => (
       background-image: url('${hashToImage(hash)}');
       background-size: cover;
       background-position: center;
+      ${waveOnly ? 'filter: grayscale(0.5) opacity(0.8);' : ''}
       height: 100%;
       width: 100%;
     }
@@ -63,7 +65,7 @@ export const HashImage: React.FC<Props> = ({
   src,
   width,
   height,
-  eager,
+  eager
 }) => (
   <div>
     <Image
@@ -82,7 +84,7 @@ export const HashImage: React.FC<Props> = ({
         max-width: ${width}px;
         max-height: ${height}px;
         align-items: center;
-        justify-content: center;      
+        justify-content: center;
       }
     `}</style>
   </div>

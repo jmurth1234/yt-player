@@ -1,23 +1,24 @@
-import React, { useContext, useMemo, useState, memo } from 'react'
-import Head from '../../components/head'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
-import { AudioContext } from '../../lib/audio-context'
 import dynamic from 'next/dynamic'
+import Wave from "@foobar404/wave"
 
+import Head from '../../components/head'
 import Song from '../../components/song'
 import { getYoutube, Video } from '../../lib/youtube-retriever'
+import { AudioContext } from '../../lib/audio-context'
 import getAudioUrl from '../../lib/audio-url'
 import styles from './Player.module.scss'
 
 const PlayIcon = dynamic(() => import('../../components/play-icon'))
 
-const BlurredBackground = memo(dynamic(() =>
+const BlurredBackground = dynamic(() =>
   import('../../components/blurhash').then((c) => c.BlurredBackground)
-))
+)
 
-const HashImage = memo(dynamic(() =>
+const HashImage = dynamic(() =>
   import('../../components/blurhash').then((c) => c.HashImage)
-))
+)
 
 const Slider = dynamic(() => import('rc-slider'))
 const Range = dynamic(() => import('rc-slider').then((module) => module.Range))
@@ -38,8 +39,21 @@ const Player = ({ result }) => {
   const currentSong: Video = { ...nowPlaying, ...result }
 
   const url = getAudioUrl(result)
+  let [waveOnly, setWave] = useState(false);
 
   const [showingRelated, setRelated] = useState(false)
+
+  const handleVisualisation = () => {
+    if (typeof window !== 'undefined') {
+      const localWave = new Wave()
+      localWave.fromElement("audioElem", "canvas", {
+        type: "shockwave",
+        stroke: 4,
+        colors: currentSong.colours
+      });
+    }
+
+  }
 
   useMemo(() => {
     if (!url || (nowPlaying && nowPlaying.id === result.id)) {
@@ -51,7 +65,11 @@ const Player = ({ result }) => {
       url,
     })
     setPosition(0)
+
+    handleVisualisation()
   }, [url, nowPlaying, result])
+
+  useEffect(handleVisualisation, [])
 
   const changeVal = (pos) => {
     if (pos[1] === currentTime) return
@@ -63,7 +81,7 @@ const Player = ({ result }) => {
     setRelated(!showingRelated)
   }
 
-  const thumbnail = currentSong.thumb || 'https://placehold.it/640x360'
+  const thumbnail = currentSong.thumb || 'https://placeholder.com/640x360'
 
   return (
     <div className={classNames(styles.container, 'container')}>
@@ -71,7 +89,7 @@ const Player = ({ result }) => {
 
       <div className={classNames(styles.area, styles.playerArea)}>
         <div className={styles.infoArea}>
-          <div className={styles.thumb}>
+          {!waveOnly && <div className={styles.thumb}>
             <HashImage
               width={500}
               height={280}
@@ -79,7 +97,7 @@ const Player = ({ result }) => {
               hash={currentSong.blurHash}
               eager
             />
-          </div>
+          </div>}
 
           <div className={styles.hero}>
             <h3>{currentSong.title || 'Loading...'}</h3>
@@ -123,13 +141,16 @@ const Player = ({ result }) => {
           </div>
         </div>
 
-        <div className={classNames(styles.controls, styles.secondary)}>
+        <div className={classNames(styles.controls)}>
           <button className={styles.secondary} onClick={toggleRelated}>
             Show Related
           </button>
+          <button onClick={() => setWave(!waveOnly)}>
+            Minimum UI
+          </button>
         </div>
       </div>
-      {currentSong.related && (
+      {currentSong.related && !waveOnly && (
         <div
           className={classNames(
             styles.area,
@@ -157,7 +178,9 @@ const Player = ({ result }) => {
         </div>
       )}
 
-      <BlurredBackground hash={currentSong.blurHash} />
+      <canvas id="canvas" width={1280} height={720} />
+
+      <BlurredBackground hash={currentSong.blurHash} waveOnly={waveOnly} />
     </div>
   )
 }

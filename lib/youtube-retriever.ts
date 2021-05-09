@@ -2,9 +2,10 @@ import ytdl, { Author } from 'ytdl-core'
 
 import { Readable, PassThrough } from 'stream'
 
-import { encodeImageToBlurHash } from './encode-image'
+import { encodeImageToBlurHash, encodeImageToColours } from './encode-image'
 import ffmpeg, { setFfmpegPath } from 'fluent-ffmpeg'
 import path from 'ffmpeg-static'
+
 
 setFfmpegPath(path)
 
@@ -18,6 +19,7 @@ export interface Video {
   channelUrl?: string
   length?: number
   related?: Video[]
+  colours: string[]
 }
 
 export const getYoutube = async (
@@ -26,10 +28,6 @@ export const getYoutube = async (
 ): Promise<Video | Readable> => {
   if (!url) {
     throw new Error('URL is required')
-  }
-
-  interface Related extends ytdl.relatedVideo {
-    video_thumbnail?: string
   }
 
   const videoInfo = await ytdl.getInfo(url)
@@ -47,20 +45,23 @@ export const getYoutube = async (
     const info = videoInfo.videoDetails
 
     const blurHash = await encodeImageToBlurHash(largeThumb.url)
+    const colours = await encodeImageToColours(largeThumb.url)
 
     const related = await Promise.all(
       videoInfo.related_videos
         .filter((video) => !!video.title && !!video.id)
         .map(
-          async (video: Related): Promise<Video> => {
-            const blurHash = await encodeImageToBlurHash(video.video_thumbnail)
+          async (video: ytdl.relatedVideo): Promise<Video> => {
+            const blurHash = await encodeImageToBlurHash(video.thumbnails[0].url)
+            const colours = await encodeImageToColours(video.thumbnails[0].url)
 
             return {
               title: video.title,
-              thumb: video.video_thumbnail,
+              thumb: video.thumbnails[0].url,
               channelName: (video.author as Author).name,
               id: video.id,
               blurHash,
+              colours
             }
           }
         )
@@ -75,6 +76,7 @@ export const getYoutube = async (
       id: info.videoId,
       length: Number.parseInt(info.lengthSeconds),
       related,
+      colours
     }
 
     return infoObj

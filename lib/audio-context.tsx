@@ -77,6 +77,7 @@ export default class YTAudioContextWrapper extends React.Component {
         <>
           {this.props.children}
           <audio
+            id="audioElem"
             autoPlay
             src={audioContext.nowPlaying?.url}
             ref={this.audio}
