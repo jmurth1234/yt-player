@@ -1,10 +1,4 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: !!process.env.ANALYZE,
-})
-
-const composePlugins = require('next-compose-plugins')
-
-module.exports = composePlugins([withBundleAnalyzer], {
+module.exports = {
   webpack: (config, { webpack }) => {
     // Note: we provide webpack above so you should not `require` it
     // Perform customizations to webpack config
@@ -21,8 +15,5 @@ module.exports = composePlugins([withBundleAnalyzer], {
   },
   images: {
     domains: ['placeholder.com', 'ytimg.com', 'i.ytimg.com']
-  },
-  future: {
-    webpack5: true,
-  },
-})
+  }
+}

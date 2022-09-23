@@ -42,7 +42,7 @@ interface Props {
 }
 
 export const BlurredBackground: React.FC<Props> = ({ hash, waveOnly }) => (
-  <style jsx>{`
+  <style jsx global>{`
     body:before {
       content: '';
       position: fixed;

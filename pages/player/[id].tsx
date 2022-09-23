@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import dynamic from 'next/dynamic'
-import Wave from "@foobar404/wave"
+import { Wave } from "@foobar404/wave"
 
 import Head from '../../components/head'
 import Song from '../../components/song'
@@ -34,25 +34,47 @@ const Player = ({ result }) => {
     currentBuffered,
     setPosition,
     setVolume,
+    minimalUI,
+    setMinimalUI,
   } = useContext(AudioContext)
 
   const currentSong: Video = { ...nowPlaying, ...result }
 
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
   const url = getAudioUrl(result)
-  let [waveOnly, setWave] = useState(false);
+  const [wave, setWaveArea] = useState<Wave | null>(null);
 
   const [showingRelated, setRelated] = useState(false)
 
   const handleVisualisation = () => {
     if (typeof window !== 'undefined') {
-      const localWave = new Wave()
-      localWave.fromElement("audioElem", "canvas", {
-        type: "shockwave",
-        stroke: 4,
-        colors: currentSong.colours
-      });
-    }
+      const canvas = canvasRef.current
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
 
+      let localWave = wave;
+
+      if (!localWave) {
+        localWave = new Wave(
+          document.getElementById('audioElem') as HTMLAudioElement,
+          canvas,
+        )
+        setWaveArea(localWave);
+      }
+
+      localWave.clearAnimations();
+
+      localWave.addAnimation(new localWave.animations.Glob({
+        fillColor: currentSong.colours[0],
+      }))
+
+      localWave.addAnimation(new localWave.animations.Turntable({
+        fillColor: currentSong.colours[1],
+      }))
+    }
   }
 
   useMemo(() => {
@@ -69,7 +91,17 @@ const Player = ({ result }) => {
     handleVisualisation()
   }, [url, nowPlaying, result])
 
-  useEffect(handleVisualisation, [])
+  useEffect(() => {
+    function handleResize() {
+      handleVisualisation()
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const changeVal = (pos) => {
     if (pos[1] === currentTime) return
@@ -87,70 +119,83 @@ const Player = ({ result }) => {
     <div className={classNames(styles.container, 'container')}>
       <Head title="Now Playing" />
 
-      <div className={classNames(styles.area, styles.playerArea)}>
-        <div className={styles.infoArea}>
-          {!waveOnly && <div className={styles.thumb}>
-            <HashImage
-              width={500}
-              height={280}
-              src={thumbnail}
-              hash={currentSong.blurHash}
-              eager
-            />
-          </div>}
-
-          <div className={styles.hero}>
-            <h3>{currentSong.title || 'Loading...'}</h3>
-            <a href={currentSong.channelUrl}>
-              <p>{currentSong.channelName}</p>
-            </a>
-          </div>
-
-          {currentSong.length != 0 && (
-            <div className={styles.sliderContainer}>
-              <Range
-                count={2}
-                min={0}
-                max={currentSong.length}
-                step={0.01}
-                defaultValue={[0, 0, 0]}
-                value={[0, currentTime, currentBuffered]}
-                onChange={changeVal}
+      {!minimalUI && (
+        <div className={classNames(styles.area, styles.playerArea)}>
+          <div className={styles.infoArea}>
+            <div className={styles.thumb}>
+              <HashImage
+                width={500}
+                height={280}
+                src={thumbnail}
+                hash={currentSong.blurHash}
+                eager
               />
             </div>
-          )}
-        </div>
 
-        <div className={styles.controls}>
-          <div className={styles.buttons}>
-            <button className={styles.primary} onClick={togglePlaying}>
-              <PlayIcon isPlaying={isPlaying} />
+            <div className={styles.hero}>
+              <h3>{currentSong.title || 'Loading...'}</h3>
+              <a href={currentSong.channelUrl}>
+                <p>{currentSong.channelName}</p>
+              </a>
+            </div>
+
+            {currentSong.length != 0 && (
+              <div className={styles.sliderContainer}>
+                <Range
+                  count={2}
+                  min={0}
+                  max={currentSong.length}
+                  step={0.01}
+                  defaultValue={[0, 0, 0]}
+                  value={[0, currentTime, currentBuffered]}
+                  onChange={changeVal}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className={styles.controls}>
+            <div className={styles.buttons}>
+              <button className={styles.primary} onClick={togglePlaying}>
+                <PlayIcon isPlaying={isPlaying} />
+              </button>
+            </div>
+
+            <div className={styles.sliderContainer}>
+              <label>Volume: {Math.round(volume * 100)}</label>
+              <Slider
+                min={0}
+                max={1}
+                step={0.01}
+                defaultValue={1}
+                value={volume}
+                onChange={setVolume}
+              />
+            </div>
+          </div>
+
+          <div className={classNames(styles.controls)}>
+            <button className={styles.secondary} onClick={toggleRelated}>
+              Show Related
+            </button>
+            <button onClick={() => setMinimalUI(!minimalUI)}>
+              Minimum UI
             </button>
           </div>
+        </div>
+      )}
 
-          <div className={styles.sliderContainer}>
-            <label>Volume: {Math.round(volume * 100)}</label>
-            <Slider
-              min={0}
-              max={1}
-              step={0.01}
-              defaultValue={1}
-              value={volume}
-              onChange={setVolume}
-            />
+      {minimalUI && (
+        <div className={classNames(styles.middleArea)}>
+          <div className={styles.controls}>          
+            <button onClick={() => setMinimalUI(!minimalUI)}>
+              Full UI
+            </button>
           </div>
         </div>
+      )}
 
-        <div className={classNames(styles.controls)}>
-          <button className={styles.secondary} onClick={toggleRelated}>
-            Show Related
-          </button>
-          <button onClick={() => setWave(!waveOnly)}>
-            Minimum UI
-          </button>
-        </div>
-      </div>
-      {currentSong.related && !waveOnly && (
+      {currentSong.related && !minimalUI && (
         <div
           className={classNames(
             styles.area,
@@ -178,9 +223,9 @@ const Player = ({ result }) => {
         </div>
       )}
 
-      <canvas id="canvas" width={1280} height={720} />
+      <canvas id="canvas" ref={canvasRef} className={styles.canvas} />
 
-      <BlurredBackground hash={currentSong.blurHash} waveOnly={waveOnly} />
+      <BlurredBackground hash={currentSong.blurHash} waveOnly={minimalUI} />
     </div>
   )
 }

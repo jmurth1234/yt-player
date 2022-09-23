@@ -8,9 +8,9 @@ import dynamic from 'next/dynamic'
 const PlayIcon = dynamic(() => import('../play-icon'))
 
 function AudioPlayer({ hidden }) {
-  const { nowPlaying, isPlaying, togglePlaying } = useContext(AudioContext)
+  const { nowPlaying, isPlaying, togglePlaying, minimalUI } = useContext(AudioContext)
 
-  const offscreen = hidden || !nowPlaying || !nowPlaying.url
+  const offscreen = (hidden && !minimalUI) || !nowPlaying || !nowPlaying.url
 
   if (offscreen) return null
 

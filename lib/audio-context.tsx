@@ -7,10 +7,12 @@ export interface YTAudioContext {
   volume: number
   currentTime: number
   currentBuffered: number
+  minimalUI: boolean
   setPosition: (pos: number) => void
   setNowPlaying: (nowPlaying: any) => void
   setVolume: (vol: number) => void
   togglePlaying: () => void
+  setMinimalUI: (minimalUI: boolean) => void
 }
 
 export const AudioContext = React.createContext<YTAudioContext>({
@@ -19,10 +21,12 @@ export const AudioContext = React.createContext<YTAudioContext>({
   volume: 1,
   currentTime: 0,
   currentBuffered: 0,
+  minimalUI: false,
   setPosition(pos) {},
   setNowPlaying(nowPlaying) {},
   setVolume(vol) {},
   togglePlaying() {},
+  setMinimalUI(minimalUI) {},
 })
 
 export default class YTAudioContextWrapper extends React.Component {
@@ -32,6 +36,7 @@ export default class YTAudioContextWrapper extends React.Component {
     volume: 1,
     currentTime: 0,
     currentBuffered: 0,
+    minimalUI: false,
   }
 
   audio = React.createRef<HTMLAudioElement>()
@@ -47,6 +52,7 @@ export default class YTAudioContextWrapper extends React.Component {
         : 0,
     })
   }
+  
 
   render() {
     const audioContext: YTAudioContext = {
@@ -56,6 +62,7 @@ export default class YTAudioContextWrapper extends React.Component {
       setNowPlaying: this.setNowPlaying,
       currentTime: this.state.currentTime,
       currentBuffered: this.state.currentBuffered,
+      minimalUI: this.state.minimalUI,
       setVolume: (vol: number) => {
         this.audio.current.volume = vol
       },
@@ -70,6 +77,9 @@ export default class YTAudioContextWrapper extends React.Component {
           this.audio.current.play()
         }
       },
+      setMinimalUI: (minimalUI: boolean) => {
+        this.setState({ minimalUI })
+      }
     }
 
     return (

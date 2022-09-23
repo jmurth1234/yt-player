@@ -1,6 +1,7 @@
 import { encode } from 'blurhash'
 import sharp from 'sharp'
 import { extractColors } from 'extract-colors'
+import fetch from 'node-fetch'
 
 interface BufferReturn {
   height: number
@@ -9,13 +10,14 @@ interface BufferReturn {
 }
 
 async function getBuffer(url: string, isRaw?: boolean): Promise<BufferReturn> {
-  const image: any = await fetch(url)
-  const buffer = await image.buffer()
+  const image = await fetch(url)
 
   return new Promise((resolve, reject) => {
-    let process = sharp(buffer)
+    let process = sharp()
       .ensureAlpha()
       .resize(128, 72, { fit: 'inside' })
+
+    image.body.pipe(process)
 
     if (isRaw) {
       process = process.raw()
