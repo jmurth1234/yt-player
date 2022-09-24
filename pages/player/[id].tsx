@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import dynamic from 'next/dynamic'
-import { Wave } from "@foobar404/wave"
 
 import Head from '../../components/head'
 import Song from '../../components/song'
@@ -19,9 +18,11 @@ const BlurredBackground = dynamic(() =>
 const HashImage = dynamic(() =>
   import('../../components/blurhash').then((c) => c.HashImage)
 )
+const Wave = dynamic(() =>
+  import('../../components/wave'), { ssr: false }
+)
 
 const Slider = dynamic(() => import('rc-slider'))
-const Range = dynamic(() => import('rc-slider').then((module) => module.Range))
 
 const Player = ({ result }) => {
   const {
@@ -33,6 +34,7 @@ const Player = ({ result }) => {
     setNowPlaying,
     currentBuffered,
     setPosition,
+    loading,
     setVolume,
     minimalUI,
     setMinimalUI,
@@ -40,44 +42,12 @@ const Player = ({ result }) => {
 
   const currentSong: Video = { ...nowPlaying, ...result }
 
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
   const url = getAudioUrl(result)
-  const [wave, setWaveArea] = useState<Wave | null>(null);
 
   const [showingRelated, setRelated] = useState(false)
 
-  const handleVisualisation = () => {
-    if (typeof window !== 'undefined') {
-      const canvas = canvasRef.current
-      canvas.style.width = "100%";
-      canvas.style.height = "100%";
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
 
-      let localWave = wave;
-
-      if (!localWave) {
-        localWave = new Wave(
-          document.getElementById('audioElem') as HTMLAudioElement,
-          canvas,
-        )
-        setWaveArea(localWave);
-      }
-
-      localWave.clearAnimations();
-
-      localWave.addAnimation(new localWave.animations.Glob({
-        fillColor: currentSong.colours[0],
-      }))
-
-      localWave.addAnimation(new localWave.animations.Turntable({
-        fillColor: currentSong.colours[1],
-      }))
-    }
-  }
-
-  useMemo(() => {
+  useEffect(() => {
     if (!url || (nowPlaying && nowPlaying.id === result.id)) {
       return
     }
@@ -88,20 +58,16 @@ const Player = ({ result }) => {
     })
     setPosition(0)
 
-    handleVisualisation()
+    if (typeof window !== 'undefined') {
+      const audio = document.getElementById('audioElem') as HTMLAudioElement
+
+      if (audio) {
+        audio.play().catch((e) => {
+          console.error('Error playing audio', e)
+        })
+      }
+    }
   }, [url, nowPlaying, result])
-
-  useEffect(() => {
-    function handleResize() {
-      handleVisualisation()
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
 
   const changeVal = (pos) => {
     if (pos[1] === currentTime) return
@@ -141,7 +107,8 @@ const Player = ({ result }) => {
 
             {currentSong.length != 0 && (
               <div className={styles.sliderContainer}>
-                <Range
+                <Slider
+                  range
                   count={2}
                   min={0}
                   max={currentSong.length}
@@ -157,7 +124,7 @@ const Player = ({ result }) => {
           <div className={styles.controls}>
             <div className={styles.buttons}>
               <button className={styles.primary} onClick={togglePlaying}>
-                <PlayIcon isPlaying={isPlaying} />
+                <PlayIcon isPlaying={isPlaying} isLoading={!url || loading} />
               </button>
             </div>
 
@@ -180,16 +147,6 @@ const Player = ({ result }) => {
             </button>
             <button onClick={() => setMinimalUI(!minimalUI)}>
               Minimum UI
-            </button>
-          </div>
-        </div>
-      )}
-
-      {minimalUI && (
-        <div className={classNames(styles.middleArea)}>
-          <div className={styles.controls}>          
-            <button onClick={() => setMinimalUI(!minimalUI)}>
-              Full UI
             </button>
           </div>
         </div>
@@ -223,7 +180,7 @@ const Player = ({ result }) => {
         </div>
       )}
 
-      <canvas id="canvas" ref={canvasRef} className={styles.canvas} />
+      <Wave colours={currentSong?.colours?.length ? currentSong.colours : []} />
 
       <BlurredBackground hash={currentSong.blurHash} waveOnly={minimalUI} />
     </div>

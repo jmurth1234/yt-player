@@ -1,10 +1,10 @@
-FROM node:alpine
+FROM node:18-alpine
 
 RUN mkdir -p /opt/app
 RUN apk add --no-cache libc6-compat
 
 # Install yarn and other dependencies via apk
-RUN apk update && apk add python g++ make && rm -rf /var/cache/apk/*
+RUN apk update && apk add python3 g++ make pixman-dev cairo-dev pango-dev jpeg-dev giflib-dev && rm -rf /var/cache/apk/*
 
 ENV PORT 3000
 EXPOSE 3000

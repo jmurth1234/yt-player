@@ -7,3 +7,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - /opt/app/node_modules
+      - /opt/app/.next
+    restart: always

@@ -8,9 +8,13 @@ import dynamic from 'next/dynamic'
 const PlayIcon = dynamic(() => import('../play-icon'))
 
 function AudioPlayer({ hidden }) {
-  const { nowPlaying, isPlaying, togglePlaying, minimalUI } = useContext(AudioContext)
+  const { nowPlaying, isPlaying, togglePlaying, minimalUI, loading, setMinimalUI } = useContext(AudioContext)
 
   const offscreen = (hidden && !minimalUI) || !nowPlaying || !nowPlaying.url
+
+  const showFullUI = () => {
+    setMinimalUI(false)
+  }
 
   if (offscreen) return null
 
@@ -23,10 +27,10 @@ function AudioPlayer({ hidden }) {
         'botton'
       )}
     >
-      <Song video={nowPlaying} eager />
+      <Song video={nowPlaying} eager onClick={minimalUI ? showFullUI : undefined} />
 
       <button onClick={togglePlaying}>
-        <PlayIcon isPlaying={isPlaying} />
+        <PlayIcon isPlaying={isPlaying} isLoading={loading} />
       </button>
     </div>
   )

@@ -8,6 +8,7 @@ export interface YTAudioContext {
   currentTime: number
   currentBuffered: number
   minimalUI: boolean
+  loading: boolean
   setPosition: (pos: number) => void
   setNowPlaying: (nowPlaying: any) => void
   setVolume: (vol: number) => void
@@ -22,14 +23,15 @@ export const AudioContext = React.createContext<YTAudioContext>({
   currentTime: 0,
   currentBuffered: 0,
   minimalUI: false,
-  setPosition(pos) {},
-  setNowPlaying(nowPlaying) {},
-  setVolume(vol) {},
-  togglePlaying() {},
-  setMinimalUI(minimalUI) {},
+  loading: false,
+  setPosition(pos) { },
+  setNowPlaying(nowPlaying) { },
+  setVolume(vol) { },
+  togglePlaying() { },
+  setMinimalUI(minimalUI) { },
 })
 
-export default class YTAudioContextWrapper extends React.Component {
+export default class YTAudioContextWrapper extends React.Component<{ children: any }> {
   state = {
     nowPlaying: null,
     playing: false,
@@ -37,11 +39,15 @@ export default class YTAudioContextWrapper extends React.Component {
     currentTime: 0,
     currentBuffered: 0,
     minimalUI: false,
+    loading: false,
   }
 
   audio = React.createRef<HTMLAudioElement>()
 
-  setNowPlaying = (nowPlaying: any) => this.setState({ nowPlaying })
+  setNowPlaying = (nowPlaying: any) => {
+    this.setState({ nowPlaying })
+  }
+
   setPlaying = (playing) => this.setState({ playing })
   setVolume = () => this.setState({ volume: this.audio.current.volume })
   setCurrentTime = () => {
@@ -52,17 +58,19 @@ export default class YTAudioContextWrapper extends React.Component {
         : 0,
     })
   }
-  
+
 
   render() {
     const audioContext: YTAudioContext = {
       nowPlaying: this.state.nowPlaying,
       isPlaying: this.state.playing,
       volume: this.state.volume,
-      setNowPlaying: this.setNowPlaying,
       currentTime: this.state.currentTime,
       currentBuffered: this.state.currentBuffered,
       minimalUI: this.state.minimalUI,
+      loading: this.state.loading,
+
+      setNowPlaying: this.setNowPlaying,
       setVolume: (vol: number) => {
         this.audio.current.volume = vol
       },
@@ -95,6 +103,8 @@ export default class YTAudioContextWrapper extends React.Component {
             onPause={() => this.setPlaying(false)}
             onVolumeChange={() => this.setVolume()}
             onTimeUpdate={() => this.setCurrentTime()}
+            onLoadStart={() => this.setState({ loading: true })}
+            onLoadedData={() => this.setState({ loading: false })}
             preload="all"
           >
             Your browser does not support the audio tag.

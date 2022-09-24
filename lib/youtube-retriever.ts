@@ -1,11 +1,10 @@
 import ytdl, { Author } from 'ytdl-core'
 
-import { Readable, PassThrough } from 'stream'
+import { PassThrough, Readable } from 'stream'
 
 import { encodeImageToBlurHash, encodeImageToColours } from './encode-image'
 import ffmpeg, { setFfmpegPath } from 'fluent-ffmpeg'
 import path from 'ffmpeg-static'
-
 
 setFfmpegPath(path)
 
@@ -35,11 +34,15 @@ export const getYoutube = async (
   if (stream) {
     return ytdl(url, {
       liveBuffer: 25000,
-      highWaterMark: 1024 * 1024 * 100 
+      highWaterMark: 1024 * 1024 * 100,
+      quality: 'highestaudio',
+      filter: (format) => format.container === 'mp4',
       //highWaterMark: 1 << 25,
     })
   } else {
     const playerResponse = videoInfo.player_response
+
+    // @ts-ignore
     const largeThumb = playerResponse.videoDetails.thumbnail.thumbnails.pop()
 
     const info = videoInfo.videoDetails
@@ -83,7 +86,7 @@ export const getYoutube = async (
   }
 }
 
-export const getFromRequest = async (req, res, stream) => {
+export const getFromRequest = async (req, res, stream): Promise<Video | Readable> => {
   const url = req.body.url || `https://youtube.com/watch?v=${req.query.id}`
   let youtube: Video | Readable = null
   try {
@@ -96,7 +99,7 @@ export const getFromRequest = async (req, res, stream) => {
     const input = youtube as Readable
     const stream = new PassThrough()
     const ff = ffmpeg(input)
-      .native()
+      //.native()
       .format('mp3')
       .audioBitrate('128')
       .on('end', () => {
@@ -111,7 +114,7 @@ export const getFromRequest = async (req, res, stream) => {
     return stream
   }
 
-  return youtube
+  return youtube as Video
 }
 
 export const getInfo = async (req, res) => {

@@ -10,7 +10,9 @@ const Home = () => (
 
     <div className={styles.hero}>
       <h1 className={styles.title}>Welcome to YT Player</h1>
-      <p className={styles.description}>Play most YouTube videos, without the video</p>
+      <p className={styles.description}>
+        Play most YouTube videos, without the video
+      </p>
     </div>
 
     <YoutubeForm />

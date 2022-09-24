@@ -38,7 +38,7 @@ const Song = ({ video, replace, onClick, eager }: Props) => {
   )
 
   if (onClick) {
-    return <div onClick={onClick}>{link}</div>
+    return <div className={styles.song} onClick={onClick}>{link}</div>
   }
 
   return (

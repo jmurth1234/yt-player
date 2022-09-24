@@ -14,6 +14,6 @@ module.exports = {
     return config
   },
   images: {
-    domains: ['placeholder.com', 'ytimg.com', 'i.ytimg.com']
-  }
+    domains: ['placeholder.com', 'ytimg.com', 'i.ytimg.com'],
+  },
 }

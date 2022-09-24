@@ -8,6 +8,10 @@ import '../styles/global.scss'
 import { AppProps } from 'next/app'
 import YTAudioContextWrapper from '../lib/audio-context'
 
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
+
 const YTApp: React.FC<AppProps> = (props) => {
   const { Component, pageProps, router } = props
   const hidden = router.pathname.includes('player')
