@@ -24,7 +24,8 @@ function AudioPlayer({ hidden }) {
         styles.player,
         { [styles.offscreen]: offscreen },
         'fixedBar',
-        'botton'
+        'botton',
+        { [styles.minimal]: hidden && minimalUI },
       )}
     >
       <Song video={nowPlaying} eager onClick={minimalUI ? showFullUI : undefined} />
